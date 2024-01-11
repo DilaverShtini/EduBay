@@ -15,7 +15,7 @@
             <!--<h1 class="text-light"><button><a href="home.php" style="text-decoration:none"> <img src="images\logo.png" width=70>SoundDrift </a></button></h1>
             -->
 
-            <a href="home.php">
+            <a href="index.php">
                 <!-- da rivedere per il discorso del percorso assoluto -->
                     <img src="#" width="70" style="display:inline-block">
                     <h1 class="text-white" style="display:inline-block; font-size:27px" >EduBay</h1>
@@ -57,7 +57,7 @@
                 <a href="#" class="btn btn-dark" style="text-decoration:none">
                         Crea
                 </a>
-                <a href="upload.php" class="btn btn-dark" style="text-decoration:none">
+                <a href="#" class="btn btn-dark" style="text-decoration:none">
                         Reso
                 </a>
             </div>
