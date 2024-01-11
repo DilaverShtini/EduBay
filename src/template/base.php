@@ -1,82 +1,67 @@
 <!DOCTYPE html>
 <html lang="it">
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         <title><?php echo $templateParams["titolo"]; ?></title>
-
-        <!-- Font -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CVarela+Round">
-        <!-- Bootstrap -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <!-- Custom Style -->
-        <link rel="stylesheet" href="./components/signin-modal/signin-modal.css">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <!-- Javascript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="./components/signin-modal/signin-modal.js" defer></script>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="style/style.css" aria-atomic="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Major Mono Display">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     </head>
-    <body id="body">
-        <header id="menuLink" class="bg-dark py-2">
 
-            <!-- Logo -->
-            <div id="logo" class="text-center">
-                <a href="#"><img src="./img/EduBay_logo.png" alt="EduBay"/></a>
+    <body class="bg-light">
+        <header class="bg-black fixed-top d-flex justify-content-between align-items-center">
+            <!--<h1 class="text-light"><button><a href="home.php" style="text-decoration:none"> <img src="images\logo.png" width=70>SoundDrift </a></button></h1>
+            -->
+
+            <a href="home.php">
+                <!-- da rivedere per il discorso del percorso assoluto -->
+                    <img src="#" width="70" style="display:inline-block">
+                    <h1 class="text-white" style="display:inline-block; font-size:27px" >EduBay</h1>
+            </a>
+
+            <div>
+
+                <?php
+                if(isset($_SESSION["ID"])) {
+                ?>
+                    <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
+                    </a>
+                <?php
+                } else {
+                ?>
+                    <a href="login.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-box-arrow-in-right" style="font-size: 20px"></i>
+                    </a>
+                <?php
+                }
+                ?>
             </div>
-
-            <!-- Divider -->
-            <div class="d-flex justify-content-center col-12">
-                <hr class="dividerClass text-light w-75" />
-            </div>  
-
-            <!-- Menu -->
-            <div class="container-fluid">
-                <div class="row">
-                    <nav>   
-                        <ul class="nav nav-pills" role="tablist">
-
-                            <!-- Link -->
-                            <div id="link" class="d-flex justify-content-center col-6">
-                                <nav>
-                                    <ul class="menu">
-                                        <a href="acquista.php"><li class="menuButton col">Acquista</li></a>
-                                        <a href="crea.php"><li class="menuButton col">Crea</li></a>
-                                        <a href="reso.php"><li class="menuButton col">Reso</li></a>
-                                    </ul>
-                                </nav>
-                            </div>
-                            
-                        </ul>
-                    </nav>
-                </div>
-            </div> 
         </header>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-3">
-                    <aside class="m-2 px-2 py-3">
-
-                    </aside>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <main>
-
-                    </main>
-                </div>
-                <div class="col-3">
-                    <aside class="m-2 px-2 py-3">
-                        
-                    </aside>
-                </div>
+        
+        <main>
+            <?php 
+                if(isset($templateParams["nome"])){
+                    require($templateParams["nome"]);
+                }
+            ?>
+        </main>
+        
+        <footer id="second-footer" class="bg-black text-center">
+            <div class="container">
+                <a href="#" class="btn btn-dark" style="text-decoration:none">
+                        Acquista
+                </a>
+                <a href="#" class="btn btn-dark" style="text-decoration:none">
+                        Crea
+                </a>
+                <a href="upload.php" class="btn btn-dark" style="text-decoration:none">
+                        Reso
+                </a>
             </div>
-        </div>
-
-        <?php require_once("./components/signin-modal/signin-modal.php") ?>
-
-        <footer class="bg-dark py-2">
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>
