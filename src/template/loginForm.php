@@ -8,7 +8,7 @@ if(isset($_SESSION["ID"])) {
 } elseif(isset($_POST["email"])) {
     $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3307);
 
-    if(isset($_["isAdministrator"])){
+    if(isset($_POST["isAdministrator"])){
 
         $stmt = $db->prepare("SELECT * FROM amministratore WHERE email=?");
         $stmt->bind_param("s", $email);
