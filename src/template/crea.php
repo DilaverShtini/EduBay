@@ -4,10 +4,10 @@
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $descrizioneOggetto = $_POST['descrizioneOggetto'];
-        
+            $idUtente = $_SESSION['ID'];
             $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
         
-            $dbH->addInsertion($descrizioneOggetto);
+            $dbH->addInsertion($descrizioneOggetto, $idUtente);
             $lastInsertionId = $dbH->getLastInsertionId();
 
             $nomiOggetto = $_POST['nomeOggetto'];
@@ -19,11 +19,13 @@
                 $prezzoOggetto = $prezziOggetto[$i];
                 $usuraOggetto = $usureOggetto[$i];
 
-                $dbH->addObject($nomeOggetto, $prezzoOggetto, $usuraOggetto, $lastInsertionId);
+                $dbH->addObject($nomeOggetto, $prezzoOggetto, $usuraOggetto, $lastInsertionId[0]['ID']);
             }
         }
     ?>
     <script>
+        var indiceCampo = 1;
+
         function aggiungiCampo() {
             var container = document.getElementById("campiAggiuntivi");
             
@@ -66,6 +68,9 @@
             div.appendChild(document.createElement("br"));
 
             container.appendChild(div);
+
+            indiceCampo++; // Incrementa l'indice per rendere unici i nomi degli input
+
         }
     </script>
 
@@ -75,11 +80,11 @@
         <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
         <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
         <label for="nomeOggett">Nome oggetto:</label><br>
-        <input type="text" id="nomeOggetto" name="nomeOggetto" placeholder="Nome oggetto"><br>
+        <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" placeholder="Nome oggetto"><br>
         <label for="prezzoOggetto">Prezzo:</label><br>
-        <input type="number" id="prezzoOggetto" name="prezzoOggetto" value=0><br>
+        <input type="number" id="prezzoOggetto[]" name="prezzoOggetto[]" value=0><br>
         <label for="usuraOggetto">Livello usura (0 come nuovo | 5 molto danneggiato):</label><br>
-        <input type="number" id="usuraOggetto" name="usuraOggetto" value=0><br>
+        <input type="number" id="usuraOggetto[]" name="usuraOggetto[]" value=0><br>
 
         <div id="campiAggiuntivi"></div><br>
         

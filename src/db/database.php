@@ -9,22 +9,23 @@ class DatabaseHelper{
         }        
     }
 
-    public function addInsertion($descrizione) {
+    public function addInsertion($descrizione, $idUtente) {
         $query = "
-            INSERT INTO inserzione (Descrizione)
-            VALUES (?)
+            INSERT INTO inserzione (Descrizione, IDUtente)
+            VALUES (?, ?)
         ";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $descrizione);
+        $stmt->bind_param('si', $descrizione, $idUtente);
         $stmt->execute();
     }
 
     public function getLastInsertionId() {
         $query = "
-            SELECT TOP 1 ID
+            SELECT ID
             FROM Inserzione
             ORDER BY ID DESC
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($query);
@@ -38,13 +39,14 @@ class DatabaseHelper{
     public function addObject($nomeOggetto, $prezzoOggetto, $livelloUsura) {
         $query = "
             INSERT INTO oggetto (Nome, Prezzo_Unitario, Usura, IDInserzione)
-            VALUES (?, ?, ?, (SELECT TOP 1 ID
+            VALUES (?, ?, ?, (SELECT ID
                               FROM Inserzione
-                              ORDER BY ID DESC))
+                              ORDER BY ID DESC
+                              LIMIT 1))
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('sfs', $nomeOggetto, $prezzoOggetto, $livelloUsura);
+        $stmt->bind_param('sds', $nomeOggetto, $prezzoOggetto, $livelloUsura);
         $stmt->execute();
     }
     
