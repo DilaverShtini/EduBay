@@ -21,6 +21,8 @@
 
                 $dbH->addObject($nomeOggetto, $prezzoOggetto, $usuraOggetto, $lastInsertionId[0]['ID']);
             }
+
+            $dbH->addTotalInInsertion($lastInsertionId[0]['ID']);
         }
     ?>
     <script>
