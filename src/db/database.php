@@ -20,6 +20,32 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
+    public function insertWallet($userID, $saldo){
+        $query = "
+            INSERT INTO portafoglio (IDUtente, Saldo)
+            VALUES (?, ?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('id', $userID, $saldo);
+        $stmt->execute();
+    }
+
+    public function getWalletOfUser($userID){
+        $query = "
+            SELECT Saldo
+            FROM portafoglio
+            WHERE IDUtente=?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
     public function getLastInsertionId() {
         $query = "
             SELECT ID

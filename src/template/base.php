@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<?php require_once './db/database.php';
+        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307); ?>
 <html lang="it">
     <head>
         <title><?php echo $templateParams["titolo"]; ?></title>
@@ -25,7 +27,10 @@
 
                 <?php
                 if(isset($_SESSION["ID"])) {
+                    
                 ?>
+                    Saldo Corrente: <?php $wallet = $dbh->getWalletOfUser($_SESSION["ID"]);
+                    echo $wallet["Saldo"];?> €
                     <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
                     </a>
