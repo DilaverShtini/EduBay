@@ -75,7 +75,22 @@ class DatabaseHelper{
         $stmt->bind_param('sds', $nomeOggetto, $prezzoOggetto, $livelloUsura);
         $stmt->execute();
     }
+
+    public function addTotalInInsertion($idInserzione) {
+        $query = "
+            UPDATE inserzione
+            SET TotCosto = (
+                SELECT SUM(Prezzo_unitario)
+                FROM oggetto
+                WHERE IDInserzione = ?
+            )
+            WHERE ID = ?
+        ";
     
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $idInserzione, $idInserzione);
+        $stmt->execute();
+    }
 
 }
 ?>
