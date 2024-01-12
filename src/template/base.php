@@ -51,13 +51,13 @@
         
         <footer id="second-footer" class="bg-black text-center">
             <div class="container">
-                <a href="#" class="btn btn-dark" style="text-decoration:none">
+                <a href="acquista.php" class="btn btn-dark" style="text-decoration:none">
                         Acquista
                 </a>
-                <a href="#" class="btn btn-dark" style="text-decoration:none">
+                <a href="crea.php" class="btn btn-dark" style="text-decoration:none">
                         Crea
                 </a>
-                <a href="upload.php" class="btn btn-dark" style="text-decoration:none">
+                <a href="reso.php" class="btn btn-dark" style="text-decoration:none">
                         Reso
                 </a>
             </div>
