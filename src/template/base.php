@@ -51,7 +51,7 @@
         
         <footer id="second-footer" class="bg-black text-center">
             <div class="container">
-                <a href="acquista.php" class="btn btn-dark" style="text-decoration:none">
+                <a href="acquisto.php" class="btn btn-dark" style="text-decoration:none">
                         Acquista
                 </a>
                 <a href="crea.php" class="btn btn-dark" style="text-decoration:none">

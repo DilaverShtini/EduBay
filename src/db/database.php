@@ -66,5 +66,47 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
+    public function getInsertions() {
+        $query = "
+            SELECT I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, MIN(I.ID) AS UniqueID
+            FROM Inserzione I
+            JOIN Oggetto O ON I.ID = O.IDInserzione
+            GROUP BY I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto;        
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getNumberOfInsertions() {
+        $query = "
+            SELECT COUNT(*) as nInsertion
+            FROM Inserzione I
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getInsertionObjects($IDInserzione) {
+        $query = "
+            SELECT O.Nome, O.Usura, O.Prezzo_unitario
+            FROM Oggetto O
+            WHERE O.IDInserzione = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $IDInserzione);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
 ?>
