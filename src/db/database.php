@@ -20,6 +20,62 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
+    public function addAddress($numCivico, $via, $cap, $attivo, $idUtente) {
+        $query = "
+            INSERT INTO indirizzo (NumCivico, Via, CAP, Attivo, ID_Utente)
+            VALUES (?, ?, ?, ?, ?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('isiii', $numCivico, $via, $cap, $attivo, $idUtente);
+        $stmt->execute();
+    }
+
+    public function countAddressOfUser($idUtente){
+        $query = "
+            SELECT COUNT(*) as count FROM indirizzo
+            WHERE ID_Utente = ?
+        ";
+
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i',$idUtente);
+        $stmt->execute();
+        // Associare una variabile al risultato
+        $stmt->bind_result($count);
+        
+        // Recuperare il risultato
+        $stmt->fetch();
+        
+        // Chiudere l'istruzione preparata
+        $stmt->close();
+        
+        // Restituire il risultato
+        return $count;
+    }
+
+    public function getAddressOfUser($userID){
+        $query = "
+            SELECT *
+            FROM indirizzo
+            WHERE ID_Utente=?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        
+        $addresses = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $addresses[] = $row;
+        }
+
+        return $addresses;
+    }
+
     public function insertWallet($userID, $saldo){
         $query = "
             INSERT INTO portafoglio (IDUtente, Saldo)

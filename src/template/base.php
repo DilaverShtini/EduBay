@@ -18,7 +18,6 @@
             -->
 
             <a href="index.php">
-                <!-- da rivedere per il discorso del percorso assoluto -->
                     <img src="#" width="70" style="display:inline-block">
                     <h1 class="text-white" style="display:inline-block; font-size:27px" >EduBay</h1>
             </a>
@@ -31,6 +30,11 @@
                 ?>
                     Saldo Corrente: <?php $wallet = $dbh->getWalletOfUser($_SESSION["ID"]);
                     echo $wallet["Saldo"];?> €
+
+                    <a href="address.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-geo-alt" style="font-size: 20px"></i>
+                    </a>
+                    
                     <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
                     </a>
