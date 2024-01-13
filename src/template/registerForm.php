@@ -1,5 +1,7 @@
 <?php
 
+require_once './db/database.php';
+
 $err_mess = null;
 $show_form = false;
 
@@ -11,7 +13,8 @@ if(isset($_SESSION["ID"])) {
     $password=$_POST["password"];
     $password2=$_POST["password2"];
 
-    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3306);
+    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3307);
+    $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307);
     if($password!=$password2){
         $err_mess="Le due password non corrispondono";
         $show_form=true;
@@ -44,6 +47,8 @@ if(isset($_SESSION["ID"])) {
             $stmt->bind_param("sss", $username, $email, $password);
             try {
                 if($stmt->execute()) {
+                    $lastInsertedId = $stmt->insert_id;
+                    $dbh->insertWallet($lastInsertedId, 100.00);
                     $err_mess="<a href=\"login.php\" style=\"color:black\">Registrazione effettuata con successo, ora puoi fare il login</a>";
                 } else {
                     $err_mess="Errore sconosciuto";
