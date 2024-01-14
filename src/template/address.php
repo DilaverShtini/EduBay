@@ -18,6 +18,8 @@
             }
             
             $dbH->addAddress($numCivico, $via, $cap, $attivo, $idUtente);
+
+            header("Location: {$_SERVER['PHP_SELF']}");
         }
     ?>
 
@@ -39,16 +41,53 @@
         $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
         $idUtente = $_SESSION["ID"];
         $addressOfUser = $dbH->getAddressOfUser($idUtente);
-        var_dump($addressOfUser);
 
         foreach ($addressOfUser as $address):
         ?>
             <?php if (isset($address["Via"])) : ?>
-                <p> <?php echo $address["Via"] ?></p>
+                <p> Via: <?php echo $address["Via"] ?>
+                    <button class="azione-button" data-address-id="<?php echo $address['ID']; ?>">Rendi attivo</button>
+                    Attivo: <span id="attivo-<?php echo $address['ID']; ?>"><?php echo $address["Attivo"] ?></span>
+                </p>
             <?php endif; ?>
         <?php
         endforeach;
         ?>
 </div><br>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var azioneButtons = document.querySelectorAll('.azione-button');
 
-<div>
+    azioneButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var addressId = this.getAttribute('data-address-id');
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                      // Aggiorna dinamicamente tutti i campi
+                    var responseData = JSON.parse(xhr.responseText);
+
+                    var viaElement = document.getElementById('via-' + addressId);
+                    if (viaElement) {
+                        viaElement.innerText = responseData.Via;
+                    }
+
+                    var attivoElement = document.getElementById('attivo-' + addressId);
+                    if (attivoElement) {
+                        attivoElement.innerText = responseData.Attivo;
+                    }
+
+                    // Salva nello stato locale per indicare che la richiesta è stata eseguita
+                    localStorage.setItem('addressAction_' + addressId, 'executed');
+
+                    location.reload();
+                }
+            };
+
+            xhr.open('GET', 'azione.php?address_id=' + addressId, true);
+            xhr.send();
+        });
+    });
+});
+</script>

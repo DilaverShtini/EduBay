@@ -190,5 +190,68 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function isAddressActive($idAddress){
+        $query = "
+            SELECT Attivo
+            FROM indirizzo
+            WHERE ID = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idAddress);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['Attivo'] == 1; 
+        }
+    
+        return false;
+    }
+
+    public function getStateOfAddress($idAddress){
+        $query = "
+            SELECT Attivo
+            FROM indirizzo
+            WHERE ID = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idAddress);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $row = $result->fetch_assoc();
+        return $row;
+    }
+
+    public function activateAddress($idAddress){
+        $query = "
+            UPDATE indirizzo
+            SET Attivo = 1
+            WHERE ID = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idAddress);
+        $stmt->execute();
+    
+        return $stmt->affected_rows > 0;
+    }
+
+    public function disactivateOtherAddresses($idAddress, $idUtente) {
+        $query = "
+            UPDATE indirizzo
+            SET Attivo = 0
+            WHERE ID_Utente = ? AND ID <> ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $idUtente, $idAddress);
+        $stmt->execute();
+        return $stmt->affected_rows > 0;
+    }
 }
 ?>
