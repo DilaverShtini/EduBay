@@ -252,6 +252,26 @@ class DatabaseHelper{
         $stmt->bind_param('ii', $idUtente, $idAddress);
         $stmt->execute();
         return $stmt->affected_rows > 0;
+    public function addOrder($utenteID) {
+        $query = "
+            INSERT INTO ordine (IDUtente)
+            VALUES (?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $utenteID);
+        $stmt->execute();
+    }
+
+    public function addDetailOrder($utenteID, $orderID, $insertionID) {
+        $query = "
+            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione)
+            VALUES (?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $orderID, $insertionID);
+        $stmt->execute();
     }
 }
 ?>
