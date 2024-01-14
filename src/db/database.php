@@ -134,5 +134,27 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function addOrder($utenteID) {
+        $query = "
+            INSERT INTO ordine (IDUtente)
+            VALUES (?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $utenteID);
+        $stmt->execute();
+    }
+
+    public function addDetailOrder($utenteID, $orderID, $insertionID) {
+        $query = "
+            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione)
+            VALUES (?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $orderID, $insertionID);
+        $stmt->execute();
+    }
 }
 ?>
