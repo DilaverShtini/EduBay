@@ -11,8 +11,8 @@ class DatabaseHelper{
 
     public function addInsertion($descrizione, $idUtente) {
         $query = "
-            INSERT INTO inserzione (Descrizione, IDUtente)
-            VALUES (?, ?)
+            INSERT INTO inserzione (Descrizione, IDUtente, Attivo)
+            VALUES (?, ?, 1)
         ";
 
         $stmt = $this->db->prepare($query);
@@ -150,10 +150,10 @@ class DatabaseHelper{
 
     public function getInsertions() {
         $query = "
-            SELECT I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, MIN(I.ID) AS UniqueID
+            SELECT I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, I.Attivo, MIN(I.ID) AS UniqueID
             FROM Inserzione I
             JOIN Oggetto O ON I.ID = O.IDInserzione
-            GROUP BY I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto;        
+            GROUP BY I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, I.Attivo;        
         ";
 
         $stmt = $this->db->prepare($query);
@@ -252,6 +252,8 @@ class DatabaseHelper{
         $stmt->bind_param('ii', $idUtente, $idAddress);
         $stmt->execute();
         return $stmt->affected_rows > 0;
+    }
+
     public function addOrder($utenteID) {
         $query = "
             INSERT INTO ordine (IDUtente)
@@ -282,8 +284,9 @@ class DatabaseHelper{
 
     public function getInsertionItem($insertionId) {
         $query = "
-            SELECT O.Nome
+            SELECT O.Nome, I.TotCosto
             FROM Oggetto O
+            JOIN Inserzione I ON I.ID = O.IDInserzione
             WHERE O.IDInserzione = ?
         ";
 
@@ -347,5 +350,70 @@ class DatabaseHelper{
         $stmt->bind_param('s', $nameObject);
         $stmt->execute();
     }
+
+    public function isMoneyEnough($insertionCost, $utenteID) {
+        $query = "
+            SELECT P.Saldo
+            FROM Portafoglio P
+            WHERE P.IDUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $utenteID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $saldo = $row['Saldo'];    
+            return $saldo >= $insertionCost;
+        } else {
+            return false;
+        }
+    }
+
+    public function removeMoney($insertionCost, $utenteID) {
+        $query = "
+            UPDATE Portafoglio
+            SET Saldo = Saldo - ?
+            WHERE IDUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('di', $insertionCost, $utenteID);
+        $stmt->execute();
+    }
+
+    public function disactiveInsertion($insertionID) {
+        $query = "
+            UPDATE Inserzione
+            SET Attivo = 0
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionID);
+        $stmt->execute();
+    }
+
+    public function isInsertion() {
+        $query = "
+            SELECT COUNT(I.Attivo) as nAttivi
+            FROM Inserzione I
+            WHERE I.Attivo = 1
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['nAttivi'];
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>
