@@ -202,14 +202,88 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
-    public function addDetailOrder($utenteID, $orderID, $insertionID) {
+    public function getOrderCode($utenteId) {
         $query = "
-            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione)
-            VALUES (?)
+            SELECT O.Cod_Ordine
+            FROM Ordine O
+            WHERE O.IDUtente = ?
+            ORDER BY O.Cod_Ordine DESC 
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ii', $orderID, $insertionID);
+        $stmt->bind_param('i', $utenteId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getInsertionItem($insertionId) {
+        $query = "
+            SELECT O.Nome
+            FROM Oggetto O
+            WHERE O.IDInserzione = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function addOrderDetail($orderID, $insertionID, $object) {
+        $query = "
+            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione, NomeOggetto)
+            VALUES (?, ?, ?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('iis', $orderID, $insertionID, $object);
+        $stmt->execute();
+    }
+
+    public function isObjectRank($nameObject) {
+        $query = "
+            SELECT C.Qta
+            FROM Classifica_oggetto C
+            WHERE C.NomeOggetto = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nameObject);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['Qta'];
+        }
+        return false;
+    }
+
+    public function updateObjectRank($nameObject) {
+        $query = "
+            UPDATE classifica_oggetto
+            SET Qta = Qta + 1 
+            WHERE NomeOggetto = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nameObject);
+        $stmt->execute();
+    }
+
+    public function addObjectRank($nameObject) {
+        $query = "
+            INSERT INTO classifica_oggetto (NomeOggetto, Qta)
+            VALUES (?, 1)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nameObject);
         $stmt->execute();
     }
 }

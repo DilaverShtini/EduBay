@@ -12,13 +12,28 @@
             $selectedInsertionID = $_POST['inserzione'];
             foreach ($selectedInsertionID as $selectedInsertionIDs) {
                 echo "Hai selezionato l'Inserzione con UniqueID: $selectedInsertionIDs";
+                
                 /** creo prima l'ordine con addOrder(idUtenteInSessione) */
-                
+                $dbH->addOrder($_SESSION['ID']);
+
+                /** Ottengo il codice dell'ordine appena aggiunto e gli oggetti dell'inserzione */
+                $orderCode = $dbH->getOrderCode($_SESSION['ID']);
+                $insertionItem = $dbH->getInsertionItem($selectedInsertionIDs);
+
+                /** Controllare il portafoglio per procedere con l'ordine */
+
                 /** creo poi il dettaglio ordine con le inserzioni selezionate con la checkbox ($selectedInsertionsIDs)
-                 *  (come incrementare numero linea? non puo essere A.I. visto che ho due chiavi primiarie) */
-                
-                 /** inserisco gli oggetti dell'inserzione nel dettaglio ordine (ogni riga in dettaglio ordine corrisponde ad un oggetto
-                  *  bhper facilitare il reso di un solo oggetto) */
+                *   bisogna aggiungere l'oggetto in classifica e poi crare l'ordine in dettaglio per la chiave esterna */
+                foreach ($insertionItem as $object) {
+                    if ($dbH->isObjectRank($object['Nome'])) {
+                        $dbH->updateObjectRank($object['Nome']);
+                    } else {
+                        $dbH->addObjectRank($object['Nome']);
+                    }
+                    $dbH->addOrderDetail($orderCode[0]['Cod_Ordine'], $selectedInsertionIDs, $object['Nome']);
+                }
+
+
             }
 
         }
