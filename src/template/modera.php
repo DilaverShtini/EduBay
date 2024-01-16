@@ -5,41 +5,23 @@
     $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
     $users = $dbH->getUsers();
-    $insertionsCount = $dbH->getNumberOfInsertions();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if(isset($_POST['inserzione'])) {
-            $selectedInsertionID = $_POST['inserzione'];
-            foreach ($selectedInsertionID as $selectedInsertionIDs) {
 
-                /** creo prima l'ordine con addOrder(idUtenteInSessione) */
-                $dbH->addOrder($_SESSION['ID']);
-
-                /** ottengo il codice dell'ordine appena aggiunto e gli oggetti dell'inserzione */
-                $orderCode = $dbH->getOrderCode($_SESSION['ID']);
-                $insertionItem = $dbH->getInsertionItem($selectedInsertionIDs);
-
-                /** controllo se posso permettermi l'inserzione da acquistare */
-                if($dbH->isMoneyEnough($insertionItem[0]['TotCosto'], $_SESSION['ID'])) {
-
-                    /** creo poi il dettaglio ordine con le inserzioni selezionate con la checkbox ($selectedInsertionsIDs)
-                    *   bisogna aggiungere l'oggetto in classifica e poi crare l'ordine in dettaglio per la chiave esterna */
-                    foreach ($insertionItem as $object) {
-                        if ($dbH->isObjectRank($object['Nome'])) {
-                            $dbH->updateObjectRank($object['Nome']);
-                        } else {
-                            $dbH->addObjectRank($object['Nome']);
-                        }
-                        
-                        $dbH->addOrderDetail($orderCode[0]['Cod_Ordine'], $selectedInsertionIDs, $object['Nome']);
-                    }
-                    $dbH->removeMoney($insertionItem[0]['TotCosto'], $_SESSION['ID']);
-                    $dbH->disactiveInsertion($selectedInsertionIDs);
-                } else {
-                    echo "Ordine non effettuato...controlla il portafoglio";
-                }
+        if(isset($_POST['utente_blocca'])) {
+            $selectedUserIDBlocca = $_POST['utente_blocca'];
+            foreach ($selectedUserIDBlocca as $selectedUserID) {
+                $dbH->blockUser($selectedUserID);
             }
         }
+    
+        if(isset($_POST['utente_sblocca'])) {
+            $selectedUserIDSblocca = $_POST['utente_sblocca'];
+            foreach ($selectedUserIDSblocca as $selectedUserID) {
+                $dbH->unlockUser($selectedUserID);
+            }
+        }
+    
         header("Location: {$_SERVER['PHP_SELF']}");
     }
 
@@ -56,6 +38,7 @@
                     $user = $userToBlock[$i];
                     ?>
 
+                    <input type="checkbox" id="utente_<?php echo $user['ID']; ?>" name="utente_blocca[]" value="<?php echo $user['ID']; ?>">
                     <label for="idUtente[]">ID utente:</label><br>
                     <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
                     <label for="nomeUtente[]">Username utente:</label><br>
@@ -80,6 +63,7 @@
                     $user = $userToBlock[$i];
                     ?>
 
+                    <input type="checkbox" id="utente_<?php echo $user['ID']; ?>" name="utente_sblocca[]" value="<?php echo $user['ID']; ?>">
                     <label for="idUtente[]">ID utente:</label><br>
                     <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
                     <label for="nomeUtente[]">Username utente:</label><br>
@@ -104,6 +88,7 @@
                 for ($i = 0; $i < $dbH->isUserToBlock(1); $i++): ?>
                     <?php $user = $userToUnlock[$i];?>
 
+                    <input type="checkbox" id="utente_<?php echo $user['ID']; ?>" name="utente_sblocca[]" value="<?php echo $user['ID']; ?>">
                     <label for="idUtente[]">ID utente:</label><br>
                     <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
                     <label for="nomeUtente[]">Username utente:</label><br>
@@ -123,7 +108,11 @@
     <script>
         function bloccaUtente() {
             // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
-            var checkboxes = document.querySelectorAll('input[name="inserzione"]');            
+            var checkboxes = document.querySelectorAll('input[name="utente_blocca"]');            
+        }
+        function sbloccaUtente() {
+            // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
+            var checkboxes = document.querySelectorAll('input[name="utente_sblocca"]');            
         }
     </script>
 </div>

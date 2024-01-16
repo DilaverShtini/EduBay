@@ -561,5 +561,29 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function blockUSer($userID) {
+        $query = "
+            UPDATE Utente
+            SET bloccato = 1
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+    }
+
+    public function unlockUSer($userID) {
+        $query = "
+            UPDATE Utente
+            SET bloccato = 0
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+    }
+
 }
 ?>
