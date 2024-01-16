@@ -163,6 +163,19 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getOrderDetails(){
+        $query = "
+            SELECT * 
+            FROM dettaglio_ordine
+        ";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getNumberOfInsertions() {
         $query = "
             SELECT COUNT(*) as nInsertion
@@ -176,9 +189,22 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getNumberOfOrderDetail() {
+        $query = "
+            SELECT COUNT(*) as nOrderDetail
+            FROM dettaglio_ordine
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getInsertionObjects($IDInserzione) {
         $query = "
-            SELECT O.Nome, O.Usura, O.Prezzo_unitario
+            SELECT O.ID, O.Nome, O.Usura, O.Prezzo_unitario
             FROM Oggetto O
             WHERE O.IDInserzione = ?
         ";
@@ -252,6 +278,8 @@ class DatabaseHelper{
         $stmt->bind_param('ii', $idUtente, $idAddress);
         $stmt->execute();
         return $stmt->affected_rows > 0;
+    }
+    
     public function addOrder($utenteID) {
         $query = "
             INSERT INTO ordine (IDUtente)
@@ -336,6 +364,18 @@ class DatabaseHelper{
         $stmt->bind_param('s', $nameObject);
         $stmt->execute();
     }
+    
+    public function addResoInDettaglioOrdine($numlinea, $idReso) {
+        $query = "
+            UPDATE dettaglio_ordine
+            SET Cod_Reso = ? 
+            WHERE Num_Linea = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $numlinea, $idReso);
+        $stmt->execute();
+    }
 
     public function addObjectRank($nameObject) {
         $query = "
@@ -346,6 +386,47 @@ class DatabaseHelper{
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('s', $nameObject);
         $stmt->execute();
+    }
+
+    public function addReso() {
+        $query = "
+            INSERT INTO reso
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+    }
+
+    public function getInsertionsOnDetailOrder($idUtente){
+        $query = "
+            SELECT DISTINCT ID_Inserzione
+            FROM dettaglio_ordine DT, ordine O
+            WHERE DT.Cod_Ordine = O.Cod_Ordine AND O.IDUtente = ?
+        ";
+
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idUtente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getInsertionDetailFromID($idInserzione){
+        $query = "
+            SELECT *
+            FROM Inserzione
+            WHERE ID = ?
+        ";
+
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idInserzione);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 }
 ?>
