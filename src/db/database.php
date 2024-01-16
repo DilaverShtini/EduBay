@@ -279,11 +279,6 @@ class DatabaseHelper{
         $stmt->execute();
         return $stmt->affected_rows > 0;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> e2875d830c2718c70b93c9c3b0302dc57c9a0447
     public function addOrder($utenteID) {
         $query = "
             INSERT INTO ordine (IDUtente)
