@@ -150,10 +150,10 @@ class DatabaseHelper{
 
     public function getInsertions() {
         $query = "
-            SELECT I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, I.Attivo, MIN(I.ID) AS UniqueID
+            SELECT DISTINCT(I.ID) AS UniqueID, I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, I.Attivo
             FROM Inserzione I
             JOIN Oggetto O ON I.ID = O.IDInserzione
-            GROUP BY I.Descrizione, O.Nome, O.Usura, O.Prezzo_unitario, I.TotCosto, I.Attivo;        
+            GROUP BY I.ID
         ";
 
         $stmt = $this->db->prepare($query);
@@ -490,6 +490,74 @@ class DatabaseHelper{
         } else {
             return false;
         }
+    }
+
+    public function isAdm($admId) {
+        $query = "
+            SELECT A.Username
+            FROM Amministratore A
+            WHERE A.ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $admId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['Username'];
+        } else {
+            return false;
+        }
+    }
+
+    public function getUsers() {
+        $query = "
+            SELECT U.ID, U.Username, U.Email, U.bloccato
+            FROM Utente U
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function isUserToBlock($block) {
+        $query = "
+            SELECT COUNT(U.bloccato) as nBloccati
+            FROM Utente U
+            WHERE U.bloccato = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $block);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['nBloccati'];
+        } else {
+            return false;
+        }
+    }
+
+    public function userToBlock($block) {
+        $query = "
+            SELECT U.ID, U.Username, U.Email
+            FROM utente U
+            WHERE U.bloccato = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $block);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result;
     }
 
 }
