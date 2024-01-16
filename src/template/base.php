@@ -25,8 +25,7 @@
             <div>
 
                 <?php
-                if(isset($_SESSION["ID"])) {
-                    
+                if(isset($_SESSION["ID"]) && !$dbh->isAdm($_SESSION["ID"])) {
                 ?>
                     Saldo Corrente: <?php $wallet = $dbh->getWalletOfUser($_SESSION["ID"]);
                     echo $wallet["Saldo"];?> €
@@ -41,6 +40,8 @@
                 <?php
                 } else {
                 ?>
+                    Bentornato: <?php $admName = $dbh->isAdm($_SESSION["ID"]);
+                    echo $admName;?>
                     <a href="login.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-box-arrow-in-right" style="font-size: 20px"></i>
                     </a>
@@ -60,15 +61,27 @@
         
         <footer id="second-footer" class="bg-black text-center">
             <div class="container">
-                <a href="acquisto.php" class="btn btn-dark" style="text-decoration:none">
+                <?php
+                    if(isset($_SESSION["ID"]) && !$dbh->isAdm($_SESSION["ID"])) {
+                ?>
+                    <a href="acquisto.php" class="btn btn-dark" style="text-decoration:none">
                         Acquista
-                </a>
-                <a href="crea.php" class="btn btn-dark" style="text-decoration:none">
+                    </a>
+                    <a href="crea.php" class="btn btn-dark" style="text-decoration:none">
                         Crea
-                </a>
-                <a href="reso.php" class="btn btn-dark" style="text-decoration:none">
+                    </a>
+                    <a href="reso.php" class="btn btn-dark" style="text-decoration:none">
                         Reso
-                </a>
+                    </a>
+                <?php
+                    } else {
+                ?>
+                    <a href="modera.php" class="btn btn-dark" style="text-decoration:none">
+                        Modera
+                    </a>
+                <?php
+                    }
+                ?>
             </div>
         </footer>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
