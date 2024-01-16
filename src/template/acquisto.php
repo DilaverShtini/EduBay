@@ -2,7 +2,7 @@
     <?php
     require_once './db/database.php';
 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
     $insertions = $dbH->getInsertions();
     $insertionsCount = $dbH->getNumberOfInsertions();
@@ -30,7 +30,7 @@
                         } else {
                             $dbH->addObjectRank($object['Nome']);
                         }
-                        
+
                         $dbH->addOrderDetail($orderCode[0]['Cod_Ordine'], $selectedInsertionIDs, $object['Nome']);
                     }
                     $dbH->removeMoney($insertionItem[0]['TotCosto'], $_SESSION['ID']);

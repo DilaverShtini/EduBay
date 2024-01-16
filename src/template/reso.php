@@ -1,8 +1,8 @@
 <div>
     <?php
     require_once './db/database.php';
-    $conn = new mysqli("localhost", "root", "", "edubay", 3307);
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+    $conn = new mysqli("localhost", "root", "", "edubay", 3306);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
     $orderDetails = $dbH->getOrderDetails();
     $orderDetailsCount = $dbH->getNumberOfOrderDetail();

@@ -47,7 +47,6 @@
 
     <?php if($dbH->isUserToBlock(0)): 
         $userToBlock = $dbH->userToBlock(0);
-        var_dump($userToBlock);
     ?>
 
         <h2>Deve bloccare qualcuno?</h2>
@@ -69,6 +68,31 @@
         
             <input type="submit" value="Blocca" onclick="bloccaUtente()"><br><br>
         </form>
+
+        <?php if($dbH->isUserToBlock(1)): 
+            $userToBlock = $dbH->userToBlock(1);
+        ?>
+
+        <h2>Deve sbloccare qualcuno?</h2>
+        <form action="#" method="post">
+            <?php 
+                for ($i = 0; $i < $dbH->isUserToBlock(1); $i++):
+                    $user = $userToBlock[$i];
+                    ?>
+
+                    <label for="idUtente[]">ID utente:</label><br>
+                    <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
+                    <label for="nomeUtente[]">Username utente:</label><br>
+                    <input type="text" id="nomeUtente[]" name="nomeUtente[]" readonly value="<?php echo $user['Username']; ?>"><br>
+                    <label for="emailUtente[]">Email utente:</label><br>
+                    <input type="text" id="emailUtente[]" name="emailUtente[]" readonly value="<?php echo $user['Email']; ?>"><br><br>
+                                    
+                <hr>
+            <?php endfor; ?>
+        
+            <input type="submit" value="Sblocca" onclick="bloccaUtente()"><br><br>
+        </form>
+        <?php endif; ?>
 
     <?php elseif($dbH->isUserToBlock(1)): 
         $userToUnlock = $dbH->userToBlock(1);
