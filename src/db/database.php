@@ -674,5 +674,50 @@ class DatabaseHelper{
     public function getLastInsertId() {
         return $this->db->insert_id;
     }
+
+    public function getSellerClassification() {
+        $query = "
+            SELECT R.IDRecensito, AVG(R.NumStelle) as valutazione
+            FROM Recensione R
+            GROUP BY R.IDRecensito
+            ORDER BY valutazione DESC
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getSellerCount() {
+        $query = "
+                SELECT COUNT(*) as nSeller
+                FROM Recensione R
+                GROUP BY R.IDRecensito
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getSeller($idRecensione) {
+        $query = "
+                SELECT U.username
+                FROM Utente U
+                WHERE U.ID = ?
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idRecensione);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
 ?>
