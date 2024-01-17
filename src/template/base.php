@@ -42,8 +42,8 @@
                 ?>
                     Bentornato: <?php $admName = $dbh->isAdm($_SESSION["ID"]);
                     echo $admName;?>
-                    <a href="login.php" class="btn btn-dark" style="text-decoration:none">
-                        <i class="bi bi-box-arrow-in-right" style="font-size: 20px"></i>
+                    <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
                     </a>
                 <?php
                 } else { ?>
