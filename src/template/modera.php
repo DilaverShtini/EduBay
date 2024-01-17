@@ -2,7 +2,7 @@
     <?php
     require_once './db/database.php';
 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
 
     $users = $dbH->getUsers();
 
