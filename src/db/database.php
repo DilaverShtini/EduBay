@@ -299,6 +299,10 @@ class DatabaseHelper{
         $stmt->execute();
         return $stmt->affected_rows > 0;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> de98d3683c7d8389206867efd4312d54acdfb8e7
     public function addOrder($utenteID) {
         $query = "
             INSERT INTO ordine (IDUtente)
@@ -603,7 +607,31 @@ class DatabaseHelper{
         $stmt->execute();
         $result = $stmt->get_result();
 
-        return $result;
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function blockUSer($userID) {
+        $query = "
+            UPDATE Utente
+            SET bloccato = 1
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+    }
+
+    public function unlockUSer($userID) {
+        $query = "
+            UPDATE Utente
+            SET bloccato = 0
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
     }
 
     public function getLastInsertId() {

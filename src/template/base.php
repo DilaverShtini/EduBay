@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php require_once './db/database.php';
-        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307); ?>
+        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3306); ?>
 <html lang="it">
     <head>
         <title><?php echo $templateParams["titolo"]; ?></title>
@@ -38,7 +38,7 @@
                         <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
                     </a>
                 <?php
-                } else {
+                } elseif(isset($_SESSION["ID"]) && $dbh->isAdm($_SESSION["ID"])) {
                 ?>
                     Bentornato: <?php $admName = $dbh->isAdm($_SESSION["ID"]);
                     echo $admName;?>
@@ -46,7 +46,11 @@
                         <i class="bi bi-box-arrow-in-right" style="font-size: 20px"></i>
                     </a>
                 <?php
-                }
+                } else { ?>
+                    <a href="login.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-box-arrow-in-right" style="font-size: 20px"></i>
+                    </a>
+                <?php }
                 ?>
             </div>
         </header>
