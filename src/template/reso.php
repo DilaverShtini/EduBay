@@ -1,29 +1,26 @@
 <div>
     <?php
     require_once './db/database.php';
-    $conn = new mysqli("localhost", "root", "", "edubay", 3307);
     $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
 
-    $orderDetails = $dbH->getOrderDetails();
-    $orderDetailsCount = $dbH->getNumberOfOrderDetail();
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if(isset($_POST['oggetto'])) {
-            $selectedObjectIDs = $_POST['oggetto'];
-            foreach ($selectedObjectIDs as $selectedObjectID) {
-                $dbh->addReso();
-                $last_id = $conn->insert_id;
-                //update delle righe di dettaglio ordine
-                //calcolo del numero linea a partire dall'oggetto selezionato
-                //all'interno di una inserzione non possono essere presenti due oggetti con il nome uguale
-                $dbH->addResoInDettaglioOrdine($numLinea, $last_id);
+        if(isset($_POST['inserzione'])) {
+            $selectedInsertionIDs = $_POST['inserzione'];
+            foreach ($selectedInsertionIDs as $selectedInsertionID) {
+                $dbH->addReso();
+                $last_id = $dbH->getLastInsertId(); 
+                
+                $dbH->addResoInDettaglioOrdine($selectedInsertionID, $last_id);
                 //rimborso
+                $dbH->rimborso($dbH->getInsertionDetailFromID($selectedInsertionID)[0]["TotCosto"], $_SESSION["ID"]);
 
                 //eliminazione dell'inserzione e degli oggetti 
+                $dbH->activateInsertion($selectedInsertionID);
 
                 
             }
         }
+        header("Location: {$_SERVER['PHP_SELF']}");
     }
 
     ?>
@@ -33,21 +30,23 @@
     <form action="#" method="post">
     <?php foreach ($dbH->getInsertionsOnDetailOrder($_SESSION['ID']) as $insertion) { ?>
 
-        <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
+        <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione'])): ?>
 
-        <input type="checkbox" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione[]" value="<?php echo $detailInsertion[0]['ID']; ?>">
-        <label><h5>Descrizione Inserzione: <br><?php echo $detailInsertion[0]['Descrizione']; ?></h5></label><br>
+            <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
 
-        <?php $objectsInInsertion = $dbH->getInsertionObjects($insertion["ID_Inserzione"]);
+            <input type="checkbox" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione[]" value="<?php echo $detailInsertion[0]['ID']; ?>">
+            <label><h5>Descrizione Inserzione: <br><?php echo $detailInsertion[0]['Descrizione']; ?></h5></label><br>
 
-            foreach ($objectsInInsertion as $object) { ?>
-                &nbsp<input type="checkbox" id="oggetto_<?php echo $object['ID']; ?>" name="oggetto[]" value="<?php echo $object['ID']; ?>">
-                &nbsp<label for="NomeOggetto[]">Nome Oggetto:</label><br>
-                &nbsp<input type="text" id="NomeOggetto[]" name="NomeOggetto[]" readonly value="<?php echo $object['Nome']; ?>"><br>
-                &nbsp<p>Prezzo Oggetto: <?php echo $object['Prezzo_unitario']; ?> €</p><br>
-            <?php } ?>   
+            <?php $objectsInInsertion = $dbH->getInsertionObjects($insertion["ID_Inserzione"]);
 
-        <hr>
+                foreach ($objectsInInsertion as $object) { ?>
+                    &nbsp<label for="NomeOggetto[]">Nome Oggetto:</label><br>
+                    &nbsp<input type="text" id="NomeOggetto[]" name="NomeOggetto[]" readonly value="<?php echo $object['Nome']; ?>"><br>
+                    &nbsp<p>Prezzo Oggetto: <?php echo $object['Prezzo_unitario']; ?> €</p><br>
+                <?php } ?>   
+
+            <hr>
+        <?php endif; ?>
     <?php } ?>
 
     

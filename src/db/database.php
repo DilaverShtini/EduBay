@@ -217,6 +217,26 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function isInsertionActive($idInsertion){
+        $query = "
+            SELECT Attivo
+            FROM Inserzione
+            WHERE ID = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idInsertion);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['Attivo'] == 1; 
+        }
+    
+        return false;
+    }
+
     public function isAddressActive($idAddress){
         $query = "
             SELECT Attivo
@@ -364,16 +384,28 @@ class DatabaseHelper{
         $stmt->bind_param('s', $nameObject);
         $stmt->execute();
     }
+
+    public function rimborso($insertionCost, $utenteID){
+        $query = "
+            UPDATE Portafoglio
+            SET Saldo = Saldo + ?
+            WHERE IDUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('di', $insertionCost, $utenteID);
+        $stmt->execute();
+    }
     
-    public function addResoInDettaglioOrdine($numlinea, $idReso) {
+    public function addResoInDettaglioOrdine($idInserzione, $idReso) {
         $query = "
             UPDATE dettaglio_ordine
             SET Cod_Reso = ? 
-            WHERE Num_Linea = ?
+            WHERE ID_Inserzione = ?
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ii', $numlinea, $idReso);
+        $stmt->bind_param('ii', $idReso, $idInserzione);
         $stmt->execute();
     }
 
@@ -390,7 +422,7 @@ class DatabaseHelper{
 
     public function addReso() {
         $query = "
-            INSERT INTO reso
+            INSERT INTO reso VALUES()
         ";
 
         $stmt = $this->db->prepare($query);
@@ -412,6 +444,8 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    
 
     public function getInsertionDetailFromID($idInserzione){
         $query = "
@@ -465,6 +499,18 @@ class DatabaseHelper{
         $query = "
             UPDATE Inserzione
             SET Attivo = 0
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionID);
+        $stmt->execute();
+    }
+
+    public function activateInsertion($insertionID) {
+        $query = "
+            UPDATE Inserzione
+            SET Attivo = 1
             WHERE ID = ?
         ";
 
@@ -560,5 +606,8 @@ class DatabaseHelper{
         return $result;
     }
 
+    public function getLastInsertId() {
+        return $this->db->insert_id;
+    }
 }
 ?>
