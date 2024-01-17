@@ -49,7 +49,7 @@
                 <hr>
             <?php endfor; ?>
         
-            <input type="submit" value="Blocca" onclick="bloccaUtente()"><br><br>
+            <input type="submit" value="Blocca"><br><br>
         </form>
 
         <?php if($dbH->isUserToBlock(1)): 
@@ -74,7 +74,7 @@
                 <hr>
             <?php endfor; ?>
         
-            <input type="submit" value="Sblocca" onclick="bloccaUtente()"><br><br>
+            <input type="submit" value="Sblocca"><br><br>
         </form>
         <?php endif; ?>
 
@@ -99,20 +99,10 @@
                 <hr>
             <?php endfor; ?>
         
-            <input type="submit" value="Sblocca" onclick="sbloccaUtente()"><br><br>
+            <input type="submit" value="Sblocca"><br><br>
         </form>
     <?php else: ?>
         Nessun utente da moderare..
     <?php endif; ?>
 
-    <script>
-        function bloccaUtente() {
-            // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
-            var checkboxes = document.querySelectorAll('input[name="utente_blocca"]');            
-        }
-        function sbloccaUtente() {
-            // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
-            var checkboxes = document.querySelectorAll('input[name="utente_sblocca"]');            
-        }
-    </script>
 </div>

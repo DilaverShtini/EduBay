@@ -70,7 +70,7 @@
                 <?php endif; ?>
             <?php endfor; ?>
         
-            <input type="submit" value="Acquista!" onclick="verificaCheckbox()"><br><br>
+            <input type="submit" value="Acquista!"><br><br>
         </form>
     <?php else: ?>
         <div>
@@ -78,10 +78,4 @@
         </div>
     <?php endif; ?>
 
-    <script>
-        function verificaCheckbox() {
-            // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
-            var checkboxes = document.querySelectorAll('input[name="inserzione"]');            
-        }
-    </script>
 </div>
