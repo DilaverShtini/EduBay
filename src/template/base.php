@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php require_once './db/database.php';
-        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307); ?>
+        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3306); ?>
 <html lang="it">
     <head>
         <title><?php echo $templateParams["titolo"]; ?></title>
@@ -80,6 +80,12 @@
                     </a>
                     <a href="reso.php" class="btn btn-dark" style="text-decoration:none">
                         Reso
+                    </a>
+                    <a href="classifica_venditore.php" class="btn btn-dark" style="text-decoration:none">
+                        Classifica venditori
+                    </a>
+                    <a href="classifica_oggetto.php" class="btn btn-dark" style="text-decoration:none">
+                        Classifica oggetti
                     </a>
                 <?php
                     } else {
