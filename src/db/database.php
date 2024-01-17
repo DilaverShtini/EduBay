@@ -429,6 +429,7 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
     public function isMoneyEnough($insertionCost, $utenteID) {
         $query = "
             SELECT P.Saldo
@@ -583,6 +584,46 @@ class DatabaseHelper{
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $userID);
         $stmt->execute();
+    }
+
+    public function getItemClassification() {
+        $query = "
+            SELECT C.NomeOggetto, C.Qta
+            FROM Classifica_oggetto C
+            ORDER BY C.Qta DESC
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getItemCount() {
+        $query = "
+            SELECT COUNT(*) as nItem
+            FROM Classifica_oggetto C
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function isItemClassification() {
+        $query = "
+            SELECT COUNT(*) as classificationSize
+            FROM Classifica_oggetto O
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
     }
 
 }

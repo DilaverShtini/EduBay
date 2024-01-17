@@ -77,6 +77,12 @@
                     <a href="reso.php" class="btn btn-dark" style="text-decoration:none">
                         Reso
                     </a>
+                    <a href="classifica_venditore.php" class="btn btn-dark" style="text-decoration:none">
+                        Classifica venditori
+                    </a>
+                    <a href="classifica_oggetto.php" class="btn btn-dark" style="text-decoration:none">
+                        Classifica oggetti
+                    </a>
                 <?php
                     } else {
                 ?>
