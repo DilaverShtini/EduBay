@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php require_once './db/database.php';
-        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3306); ?>
+        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307); ?>
 <html lang="it">
     <head>
         <title><?php echo $templateParams["titolo"]; ?></title>
