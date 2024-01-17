@@ -50,18 +50,7 @@
     <?php } ?>
 
     
-       <input type="submit" value="Rendi!" onclick="verificaCheckbox()"><br><br>
+       <input type="submit" value="Rendi!"><br><br>
     </form>
 
-    <script>
-        function verificaCheckbox() {
-            // Ottenere tutti gli elementi checkbox con il nome "checkboxGroup"
-            var checkboxes = document.querySelectorAll('input[name="inserzione"]');
-
-            // Iterare attraverso gli elementi e verificare se sono checkati
-            checkboxes.forEach(function(checkbox) {
-                console.log(checkbox.value + ': ' + checkbox.checked);
-            });
-        }
-    </script>
 </div>
