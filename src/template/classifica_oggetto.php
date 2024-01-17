@@ -9,7 +9,7 @@
 
     ?>
 
-    <?php if($itemsCount): ?>
+    <?php if($itemsCount[0]['nItem']): ?>
 
         <h2>Ecco la classifica degli oggetti più venduti!</h2>
         <form action="#" method="post">

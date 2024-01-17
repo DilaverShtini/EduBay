@@ -9,7 +9,7 @@
 
     ?>
 
-    <?php if($sellersCount): ?>
+    <?php if($sellersCount[0]['nSeller']): ?>
 
         <h2>Ecco la classifica degli venditori più affidabili!</h2>
         <form action="#" method="post">

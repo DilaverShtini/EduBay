@@ -705,5 +705,26 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function deleteObject($insertionID) {
+        $query = "
+                DELETE FROM Oggetto
+                WHERE IDInserzione = ?
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionID);
+        $stmt->execute();
+    }
+
+    public function deleteInsertion($insertionID) {
+        $query = "
+                DELETE FROM Inserzione
+                WHERE ID = ?
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionID);
+        $stmt->execute();
+    }
 }
 ?>

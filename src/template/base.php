@@ -84,10 +84,13 @@
                         Classifica oggetti
                     </a>
                 <?php
-                    } else {
+                    } else if (isset($_SESSION["ID"]) && $dbh->isAdm($_SESSION["ID"])) {
                 ?>
                     <a href="modera.php" class="btn btn-dark" style="text-decoration:none">
                         Modera
+                    </a>
+                    <a href="elimina_inserzione.php" class="btn btn-dark" style="text-decoration:none">
+                        Elimina inserzione
                     </a>
                 <?php
                     }
