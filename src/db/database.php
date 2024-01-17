@@ -299,6 +299,7 @@ class DatabaseHelper{
         $stmt->execute();
         return $stmt->affected_rows > 0;
     }
+
     public function addOrder($utenteID) {
         $query = "
             INSERT INTO ordine (IDUtente)
@@ -444,8 +445,6 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
-    
 
     public function getInsertionDetailFromID($idInserzione){
         $query = "
@@ -656,19 +655,6 @@ class DatabaseHelper{
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function isItemClassification() {
-        $query = "
-            SELECT COUNT(*) as classificationSize
-            FROM Classifica_oggetto O
-        ";
-
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_assoc();
     }
 
     public function getLastInsertId() {

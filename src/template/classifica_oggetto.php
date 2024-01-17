@@ -9,7 +9,7 @@
 
     ?>
 
-    <?php if($dbH->isItemClassification()['classificationSize']): ?>
+    <?php if($itemsCount): ?>
 
         <h2>Ecco la classifica degli oggetti più venduti!</h2>
         <form action="#" method="post">
