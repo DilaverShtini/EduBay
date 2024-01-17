@@ -421,6 +421,17 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
+    public function addReview($idUtenteRecensito, $idUtenteRecensore, $numStella) {
+        $query = "
+            INSERT INTO recensione (IDRecensito, IDRecensore, NumStelle)
+            VALUES (?, ?, ?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('iii', $idUtenteRecensito, $idUtenteRecensore, $numStella);
+        $stmt->execute();
+    }
+
     public function addReso() {
         $query = "
             INSERT INTO reso VALUES()
@@ -556,6 +567,21 @@ class DatabaseHelper{
         } else {
             return false;
         }
+    }
+
+    public function getUserById($idUser){
+        $query = "
+            SELECT *
+            FROM Utente U
+            WHERE ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idUser);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getUsers() {

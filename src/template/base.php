@@ -33,6 +33,10 @@
                     <a href="address.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-geo-alt" style="font-size: 20px"></i>
                     </a>
+
+                    <a href="recensione.php" class="btn btn-dark" style="text-decoration:none">
+                        <i class="bi bi-star" style="font-size: 20px"></i>
+                    </a>
                     
                     <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
