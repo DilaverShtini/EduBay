@@ -45,7 +45,9 @@
 
     ?>
 
-    <?php if($dbH->isInsertion()): ?>
+    <?php 
+        $addressAct = $dbH->isAddressSelected($_SESSION['ID']);
+        if($dbH->isInsertion() && $addressAct['nAddress']): ?>
 
         <h2>Scegli l'inserzione da acquistare!</h2>
         <form action="#" method="post">

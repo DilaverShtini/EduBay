@@ -257,15 +257,16 @@ class DatabaseHelper{
         return false;
     }
 
-    public function getStateOfAddress($idAddress){
+    public function isAddressSelected($idUtente){
         $query = "
-            SELECT Attivo
+            SELECT COUNT(*) as nAddress
             FROM indirizzo
-            WHERE ID = ?
+            WHERE ID_Utente = ?
+            AND Attivo = 1
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $idAddress);
+        $stmt->bind_param('i', $idUtente);
         $stmt->execute();
         $result = $stmt->get_result();
         

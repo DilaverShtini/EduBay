@@ -38,7 +38,7 @@
 
     <div id="campiAggiuntivi">
         <?php 
-        $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+        $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
         $idUtente = $_SESSION["ID"];
         $addressOfUser = $dbH->getAddressOfUser($idUtente);
 
