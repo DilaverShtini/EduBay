@@ -584,6 +584,7 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Da togliere
     public function getUsers() {
         $query = "
             SELECT U.ID, U.Username, U.Email, U.bloccato
@@ -612,6 +613,32 @@ class DatabaseHelper{
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['nBloccati'];
+        } else {
+            return false;
+        }
+    }
+
+    public function isUserBadValutated() {
+        $query = "
+            SELECT U.ID, U.Username, U.Email, COUNT(*) as stars
+            FROM Recensione R
+            JOIN Utente U ON R.IDRecensito = U.ID
+            WHERE R.NumStelle = 1
+            AND U.bloccato = 0
+            GROUP BY U.ID, U.Username
+            HAVING COUNT(U.ID) >= 15;
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) { 
+            $resultArray = array();
+            while ($row = $result->fetch_assoc()) {
+                $resultArray[] = $row;
+            }
+            return $resultArray;
         } else {
             return false;
         }

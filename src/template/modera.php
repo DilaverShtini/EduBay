@@ -27,27 +27,25 @@
 
     ?>
 
-    <?php if($dbH->isUserToBlock(0)): 
-        $userToBlock = $dbH->userToBlock(0);
+    <?php if($dbH->isUserBadValutated()):
+        $userToBlock = $dbH->isUserBadValutated();
     ?>
 
         <h2>Deve bloccare qualcuno?</h2>
         <form action="#" method="post">
-            <?php 
-                for ($i = 0; $i < $dbH->isUserToBlock(0); $i++):
-                    $user = $userToBlock[$i];
-                    ?>
+            <?php foreach($userToBlock as $user):
+                ?>
 
-                    <input type="checkbox" id="utente_<?php echo $user['ID']; ?>" name="utente_blocca[]" value="<?php echo $user['ID']; ?>">
-                    <label for="idUtente[]">ID utente:</label><br>
-                    <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
-                    <label for="nomeUtente[]">Username utente:</label><br>
-                    <input type="text" id="nomeUtente[]" name="nomeUtente[]" readonly value="<?php echo $user['Username']; ?>"><br>
-                    <label for="emailUtente[]">Email utente:</label><br>
-                    <input type="text" id="emailUtente[]" name="emailUtente[]" readonly value="<?php echo $user['Email']; ?>"><br><br>
-                                    
+                <input type="checkbox" id="utente_<?php echo $user['ID']; ?>" name="utente_blocca[]" value="<?php echo $user['ID']; ?>">
+                <label for="idUtente[]">ID utente:</label><br>
+                <input type="number" id="idUtente[]" name="idUtente[]" readonly value="<?php echo $user['ID']; ?>"><br>    
+                <label for="nomeUtente[]">Username utente:</label><br>
+                <input type="text" id="nomeUtente[]" name="nomeUtente[]" readonly value="<?php echo $user['Username']; ?>"><br>
+                <label for="emailUtente[]">Email utente:</label><br>
+                <input type="text" id="emailUtente[]" name="emailUtente[]" readonly value="<?php echo $user['Email']; ?>"><br><br>
+
                 <hr>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         
             <input type="submit" value="Blocca"><br><br>
         </form>
