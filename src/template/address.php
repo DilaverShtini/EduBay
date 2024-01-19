@@ -9,7 +9,7 @@
             $cap = $_POST['cap'];
             $nAddressOfUser = $dbh -> countAddressOfUser($idUtente);
             
-            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
+            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
 
             if($nAddressOfUser === 0){
                 $attivo = 1;

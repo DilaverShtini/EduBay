@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php require_once './db/database.php';
-        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3306); ?>
+        $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307); ?>
 <html lang="it">
     <head>
         <title><?php echo $templateParams["titolo"]; ?></title>
@@ -14,11 +14,8 @@
 
     <body class="bg-light">
         <header class="bg-black fixed-top d-flex justify-content-between align-items-center">
-            <!--<h1 class="text-light"><button><a href="home.php" style="text-decoration:none"> <img src="images\logo.png" width=70>SoundDrift </a></button></h1>
-            -->
 
             <a href="index.php">
-                    <img src="#" width="70" style="display:inline-block">
                     <h1 class="text-white" style="display:inline-block; font-size:27px" >EduBay</h1>
             </a>
 
