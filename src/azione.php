@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['address_id'])) {
         $dbH->activateAddress($addressId);
     }
 
-    echo json_encode($dbH->getStateOfAddress($addressId));
+    echo json_encode($dbH->isAddressActive($addressId));
 } else {
     // Gestisci eventuali errori
     echo "Errore nella richiesta";
