@@ -422,6 +422,67 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
+    public function isSellerReviewed($nameSeller) {
+        $query = "
+            SELECT Count(*) as seller
+            FROM Classifica_venditore C
+            WHERE NomeUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nameSeller);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['seller'];
+        }
+        return false;
+    }
+
+    public function updateSellerStar($nameSeller, $reviewedID) {
+        $query = "
+            UPDATE classifica_venditore
+            SET AvgStella = (
+                                SELECT AVG(R.NumStelle)
+                                FROM Recensione R
+                                WHERE IDRecensito = ?
+                                )
+            WHERE NomeUtente = ?
+        ";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('is', $reviewedID, $nameSeller);
+        $stmt->execute();
+    }
+
+    public function addSellerStar($nameSeller, $star) {
+        $query = "
+            INSERT INTO classifica_venditore (NomeUtente, AvgStella)
+            VALUES (?, ?)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('sd', $nameSeller, $star);
+        $stmt->execute();
+    }
+
+    public function getSellerCountReview($seller) {
+        $query = "
+            SELECT C.countReview
+            FROM Classifica_venditore C
+            WHERE C.NomeUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $seller);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function addReview($idUtenteRecensito, $idUtenteRecensore, $numStella) {
         $query = "
             INSERT INTO recensione (IDRecensito, IDRecensore, NumStelle)
@@ -715,7 +776,7 @@ class DatabaseHelper{
         return $this->db->insert_id;
     }
 
-    public function getSellerClassification() {
+    /*public function getSellerClassification() {
         $query = "
             SELECT R.IDRecensito, AVG(R.NumStelle) as valutazione
             FROM Recensione R
@@ -728,9 +789,36 @@ class DatabaseHelper{
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
+    }*/
+
+    public function getSellerClassification() {
+        $query = "
+            SELECT C.NomeUtente, C.AvgStella
+            FROM Classifica_venditore C
+            ORDER BY C.AvgStella DESC
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getSellerCount() {
+        $query = "
+            SELECT COUNT(*) as nSeller
+            FROM Classifica_venditore C
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /*public function getSellerCount() {
         $query = "
                 SELECT COUNT(*) as nSeller
                 FROM Recensione R
@@ -758,6 +846,7 @@ class DatabaseHelper{
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+    */
 
     public function deleteObject($insertionID) {
         $query = "

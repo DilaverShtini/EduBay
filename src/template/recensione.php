@@ -1,5 +1,5 @@
 <?php require_once './db/database.php'; 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307); 
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306); 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["opzioni"])) {
@@ -9,8 +9,15 @@
             $voto_selezionato = intval($_POST["voto"]);
         }
 
-
         $dbH->addReview($IdUtenteRecensito, $_SESSION["ID"], $voto_selezionato);
+        $user = $dbH->getUserById($IdUtenteRecensito);
+
+        if ($dbH->isSellerReviewed($user[0]['Username'])) {
+            $dbH->updateSellerStar($user[0]['Username'], $IdUtenteRecensito);
+        } else {
+            $dbH->addSellerStar($user[0]['Username'], $voto_selezionato);
+        }
+
         echo "recensione eseguita con successo";
     }
 ?>

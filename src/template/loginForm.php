@@ -6,7 +6,7 @@ $err_mess=null;
 if(isset($_SESSION["ID"])) {
     $err_mess="L'utente è già loggato";
 } elseif(isset($_POST["email"])) {
-    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3307);
+    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3306);
 
     if(isset($_POST["isAdministrator"])){
 
@@ -24,7 +24,7 @@ if(isset($_SESSION["ID"])) {
             $show_form = true;
             $err_mess= "Password errata";
         } else {
-            $_SESSION["ID"] = $row["ID"];
+            $_SESSION["ID_adm"] = $row["ID"];
             header("Location: index.php");
         }
     }else{

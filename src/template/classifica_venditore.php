@@ -16,13 +16,14 @@
 
             <label><h5>Classifica:</h5></label><br>
             <?php for ($i = 0; $i < $sellersCount[0]['nSeller']; $i++): ?>
-                <?php $seller = $sellers[$i];
+                <?php /*$seller = $sellers[$i];
                     $sellerInfo = $dbH->getSeller($seller['IDRecensito']);
-                ?>
+                */?>
+                <?php $seller = $sellers[$i]; ?>
 
                     <label for="posizioneClassifica"><?php echo $i+1; ?>.</label>
-                    <input type="text" id="nomeVenditore[]" name="nomeVenditore[]" readonly value="<?php echo $sellerInfo[0]['username']; ?>">
-                    <input class="valutazione" type="text" id="valutazioneOggetto[]" name="valutazioneOggetto[]" readonly value="<?php echo $seller['valutazione']; ?>"><br><br>
+                    <input type="text" id="nomeVenditore[]" name="nomeVenditore[]" readonly value="<?php echo $seller['NomeUtente']; ?>">
+                    <input class="valutazione" type="text" id="valutazioneOggetto[]" name="valutazioneOggetto[]" readonly value="<?php echo $seller['AvgStella']; ?>"><br><br>
 
             <?php endfor; ?>
             <hr>
