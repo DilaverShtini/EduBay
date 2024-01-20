@@ -1,1 +1,2 @@
 # EduBay
+Per far partire l'applicativo EduBay basterà scaricare la cartella EduBay in allegato e spostarla dentro la cartella xampp/htdocs, in seguito dopo aver attivato sia il server locale di apache e di mysql si dovrà digitare su un browser l'url: "localhost/EduBay" in questo modo verrà visualizzato il sito.
