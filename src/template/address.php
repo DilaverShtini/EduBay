@@ -27,11 +27,11 @@
 
     <form method="post">
         <label for="numCivico">Numero Civico:</label><br>
-        <input type="number" name="numCivico"><br>
+        <input type="number" name="numCivico" required><br>
         <label for="via">Via:</label><br>
-        <input type="text" id="via" name="via" placeholder="Via"><br>
+        <input type="text" id="via" name="via" placeholder="Via" required><br>
         <label for="cap">Cap:</label><br>
-        <input type="number" id="cap" name="cap"><br><br>
+        <input type="number" id="cap" name="cap" required><br><br>
 
         <input type="submit" value="Crea indirizzo!">
     </form> 

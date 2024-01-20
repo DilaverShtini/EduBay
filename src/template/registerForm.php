@@ -35,7 +35,7 @@ if(isset($_SESSION["ID"])) {
                 if($stmt->execute()) {
                     $err_mess="<a href=\"login.php\" style=\"color:black\">Registrazione effettuata con successo, ora puoi fare il login</a>";
                 } else {
-                    $err_mess="Errore sconosciuto";
+                    $err_mess="Errore nella registrazione";
                     $show_form=true;
                 }
             } catch(mysqli_sql_exception $e) {
@@ -51,7 +51,7 @@ if(isset($_SESSION["ID"])) {
                     $dbh->insertWallet($lastInsertedId, 100.00);
                     $err_mess="<a href=\"login.php\" style=\"color:black\">Registrazione effettuata con successo, ora puoi fare il login</a>";
                 } else {
-                    $err_mess="Errore sconosciuto";
+                    $err_mess="Errore nella registrazione";
                     $show_form=true;
                 }
             } catch(mysqli_sql_exception $e) {

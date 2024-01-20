@@ -180,6 +180,7 @@ class DatabaseHelper{
         $query = "
             SELECT COUNT(*) as nInsertion
             FROM Inserzione I
+            WHERE I.Attivo = 1
         ";
 
         $stmt = $this->db->prepare($query);

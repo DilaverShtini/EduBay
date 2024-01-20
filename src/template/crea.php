@@ -82,9 +82,9 @@
         <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
         <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
         <label for="nomeOggett">Nome oggetto:</label><br>
-        <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" placeholder="Nome oggetto"><br>
+        <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
         <label for="prezzoOggetto">Prezzo:</label><br>
-        <input type="text" id="prezzoOggetto[]" pattern="[0-9]+([\.,][0-9]+)?" name="prezzoOggetto[]" value=0><br>
+        <input type="number" id="prezzoOggetto[]" step="0.01" name="prezzoOggetto[]" required><br>
         <label for="usuraOggetto">Livello usura (0 come nuovo | 5 molto danneggiato):</label><br>
         <input type="number" min="0" max="5" id="usuraOggetto[]" name="usuraOggetto[]" value=0><br>
 

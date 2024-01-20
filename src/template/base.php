@@ -41,7 +41,7 @@
                 <?php
                 } elseif(isset($_SESSION["ID_adm"]) && $dbh->isAdm($_SESSION["ID_adm"])) {
                 ?>
-                    Bentornato: <?php $admName = $dbh->isAdm($_SESSION["ID"]);
+                    Bentornato: <?php $admName = $dbh->isAdm($_SESSION["ID_adm"]);
                     echo $admName;?>
                     <a href="logout.php" class="btn btn-dark" style="text-decoration:none">
                         <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
