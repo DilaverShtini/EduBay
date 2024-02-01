@@ -4,8 +4,6 @@
 
     $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
-    $users = $dbH->getUsers();
-
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if(isset($_POST['utente_blocca'])) {

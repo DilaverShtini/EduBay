@@ -700,9 +700,10 @@ class DatabaseHelper{
     public function isUserBadValutated() {
         $query = "
             SELECT U.ID, U.Username, U.Email, COUNT(*) as stars
-            FROM Recensione R
-            JOIN Utente U ON R.IDRecensito = U.ID
-            WHERE R.NumStelle = 1
+            FROM Dettaglio_Ordine DO, Ordine O, Utente U
+            WHERE DO.Cod_Ordine = O.Cod_Ordine
+            AND O.IDUtente = U.ID
+            AND DO.Recensione = 1
             AND U.bloccato = 0
             GROUP BY U.ID, U.Username
             HAVING COUNT(U.ID) >= 15;
