@@ -118,17 +118,17 @@ class DatabaseHelper{
     }
 
     //LAST_INDEX_ID()
-    public function addObject($nomeOggetto, $prezzoOggetto, $livelloUsura) {
+    public function addObject($nomeCategoria, $nomeOggetto, $prezzoOggetto, $livelloUsura) {
         $query = "
-            INSERT INTO oggetto (Nome, Prezzo_Unitario, Usura, IDInserzione)
-            VALUES (?, ?, ?, (SELECT ID
+            INSERT INTO oggetto (Categoria, Nome, Prezzo_Unitario, Usura, IDInserzione)
+            VALUES (?, ?, ?, ?, (SELECT ID
                               FROM Inserzione
                               ORDER BY ID DESC
                               LIMIT 1))
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('sds', $nomeOggetto, $prezzoOggetto, $livelloUsura);
+        $stmt->bind_param('ssds', $nomeCategoria, $nomeOggetto, $prezzoOggetto, $livelloUsura);
         $stmt->execute();
     }
 
@@ -401,9 +401,9 @@ class DatabaseHelper{
 
     public function rimborso($insertionCost, $utenteID){
         $query = "
-            UPDATE Portafoglio
+            UPDATE Utente
             SET Saldo = Saldo + ?
-            WHERE IDUtente = ?
+            WHERE ID = ?
         ";
 
         $stmt = $this->db->prepare($query);
@@ -724,9 +724,10 @@ class DatabaseHelper{
     public function isUserBadValutated() {
         $query = "
             SELECT U.ID, U.Username, U.Email, COUNT(*) as stars
-            FROM Recensione R
-            JOIN Utente U ON R.IDRecensito = U.ID
-            WHERE R.NumStelle = 1
+            FROM Dettaglio_Ordine DO, Ordine O, Utente U
+            WHERE DO.Cod_Ordine = O.Cod_Ordine
+            AND O.IDUtente = U.ID
+            AND DO.Recensione = 1
             AND U.bloccato = 0
             GROUP BY U.ID, U.Username
             HAVING COUNT(U.ID) >= 15;

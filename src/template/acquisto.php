@@ -55,7 +55,7 @@
                     <?php $insertion = $insertions[$i];?>
                 
                     <input type="checkbox" id="inserzione_<?php echo $insertion['UniqueID']; ?>" name="inserzione[]" value="<?php echo $insertion['UniqueID']; ?>">
-                    <label><h6>Descrizione Inserzione: <?php echo $insertion['Descrizione']; ?></h6></label>
+                    <label><h6>Descrizione Inserzione: <?php echo $insertion['Descrizione']; ?></h6></label><br>
 
                     <?php foreach ($dbH->getInsertionObjects($insertion['UniqueID']) as $object): ?>
                         <label for="nomeOggetto[]">Nome oggetto:</label><br>
