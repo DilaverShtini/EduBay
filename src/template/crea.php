@@ -95,9 +95,9 @@
     <form action="#" method="post">
         <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
         <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
-        <label for="nomeOggett">Categoria oggetto:</label><br>
+        <label for="nomeOggetto">Categoria oggetto:</label><br>
         <input type="text" id="categoriaOggetto[]" name="categoriaOggetto[]" required placeholder="Categoria oggetto"><br>
-        <label for="nomeOggett">Nome oggetto:</label><br>
+        <label for="nomeOggetto">Nome oggetto:</label><br>
         <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
         <label for="prezzoOggetto">Prezzo:</label><br>
         <input type="number" id="prezzoOggetto[]" step="0.01" name="prezzoOggetto[]" required><br>

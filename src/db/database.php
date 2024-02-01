@@ -118,17 +118,17 @@ class DatabaseHelper{
     }
 
     //LAST_INDEX_ID()
-    public function addObject($nomeOggetto, $prezzoOggetto, $livelloUsura) {
+    public function addObject($nomeCategoria, $nomeOggetto, $prezzoOggetto, $livelloUsura) {
         $query = "
-            INSERT INTO oggetto (Nome, Prezzo_Unitario, Usura, IDInserzione)
-            VALUES (?, ?, ?, (SELECT ID
+            INSERT INTO oggetto (Categoria, Nome, Prezzo_Unitario, Usura, IDInserzione)
+            VALUES (?, ?, ?, ?, (SELECT ID
                               FROM Inserzione
                               ORDER BY ID DESC
                               LIMIT 1))
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('sds', $nomeOggetto, $prezzoOggetto, $livelloUsura);
+        $stmt->bind_param('ssds', $nomeCategoria, $nomeOggetto, $prezzoOggetto, $livelloUsura);
         $stmt->execute();
     }
 
