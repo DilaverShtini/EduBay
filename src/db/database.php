@@ -401,9 +401,9 @@ class DatabaseHelper{
 
     public function rimborso($insertionCost, $utenteID){
         $query = "
-            UPDATE Portafoglio
+            UPDATE Utente
             SET Saldo = Saldo + ?
-            WHERE IDUtente = ?
+            WHERE ID = ?
         ";
 
         $stmt = $this->db->prepare($query);
