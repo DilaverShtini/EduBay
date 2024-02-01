@@ -22,8 +22,9 @@
                 <?php $seller = $sellers[$i]; ?>
 
                     <label for="posizioneClassifica"><?php echo $i+1; ?>.</label>
-                    <input type="text" id="nomeVenditore[]" name="nomeVenditore[]" readonly value="<?php echo $seller['NomeUtente']; ?>">
-                    <input class="valutazione" type="text" id="valutazioneOggetto[]" name="valutazioneOggetto[]" readonly value="<?php echo $seller['AvgStella']; ?>"><br><br>
+                    <input type="text" id="IdVenditore[]" name="IdVenditore[]" readonly value="<?php echo $seller['ID']; ?>">
+                    <input type="text" id="nomeVenditore[]" name="nomeVenditore[]" readonly value="<?php echo $seller['Username']; ?>">
+                    <input class="valutazione" type="text" id="valutazioneVenditore[]" name="valutazioneVenditore[]" readonly value="<?php echo $seller['AvgStella']; ?>"><br><br>
 
             <?php endfor; ?>
             <hr>

@@ -89,9 +89,9 @@ class DatabaseHelper{
 
     public function getWalletOfUser($userID){
         $query = "
-            SELECT Saldo
-            FROM portafoglio
-            WHERE IDUtente=?
+            SELECT U.Saldo
+            FROM Utente U
+            WHERE U.ID = ?
         ";
 
         $stmt = $this->db->prepare($query);
@@ -346,18 +346,18 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function addOrderDetail($orderID, $insertionID, $object) {
+    public function addOrderDetail($orderID, $insertionID) {
         $query = "
-            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione, NomeOggetto)
-            VALUES (?, ?, ?)
+            INSERT INTO Dettaglio_ordine (Cod_Ordine, ID_Inserzione)
+            VALUES (?, ?)
         ";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iis', $orderID, $insertionID, $object);
+        $stmt->bind_param('ii', $orderID, $insertionID);
         $stmt->execute();
     }
 
-    public function isObjectRank($nameObject) {
+    /*public function isObjectRank($nameObject) {
         $query = "
             SELECT C.Qta
             FROM Classifica_oggetto C
@@ -374,9 +374,9 @@ class DatabaseHelper{
             return $row['Qta'];
         }
         return false;
-    }
+    }*/
 
-    public function updateObjectRank($nameObject) {
+    /*public function updateObjectRank($nameObject) {
         $query = "
             UPDATE classifica_oggetto
             SET Qta = Qta + 1 
@@ -386,7 +386,18 @@ class DatabaseHelper{
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('s', $nameObject);
         $stmt->execute();
-    }
+    }*/
+
+    /*public function addObjectRank($nameObject) {
+        $query = "
+            INSERT INTO classifica_oggetto (NomeOggetto, Qta)
+            VALUES (?, 1)
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $nameObject);
+        $stmt->execute();
+    }*/
 
     public function rimborso($insertionCost, $utenteID){
         $query = "
@@ -409,17 +420,6 @@ class DatabaseHelper{
     
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('ii', $idReso, $idInserzione);
-        $stmt->execute();
-    }
-
-    public function addObjectRank($nameObject) {
-        $query = "
-            INSERT INTO classifica_oggetto (NomeOggetto, Qta)
-            VALUES (?, 1)
-        ";
-
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $nameObject);
         $stmt->execute();
     }
 
@@ -521,7 +521,7 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function isMoneyEnough($insertionCost, $utenteID) {
+    /*public function isMoneyEnough($insertionCost, $utenteID) {
         $query = "
             SELECT P.Saldo
             FROM Portafoglio P
@@ -540,13 +540,44 @@ class DatabaseHelper{
         } else {
             return false;
         }
+    }*/
+    public function isMoneyEnough($insertionCost, $utenteID) {
+        $query = "
+            SELECT U.Saldo
+            FROM Utente U
+            WHERE U.ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $utenteID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $saldo = $row['Saldo'];    
+            return $saldo >= $insertionCost;
+        } else {
+            return false;
+        }
     }
 
-    public function removeMoney($insertionCost, $utenteID) {
+    /*public function removeMoney($insertionCost, $utenteID) {
         $query = "
             UPDATE Portafoglio
             SET Saldo = Saldo - ?
             WHERE IDUtente = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('di', $insertionCost, $utenteID);
+        $stmt->execute();
+    }*/
+    public function removeMoney($insertionCost, $utenteID) {
+        $query = "
+            UPDATE Utente
+            SET Saldo = Saldo - ?
+            WHERE ID = ?
         ";
 
         $stmt = $this->db->prepare($query);
@@ -731,7 +762,7 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
-    public function getItemClassification() {
+    /*public function getItemClassification() {
         $query = "
             SELECT C.NomeOggetto, C.Qta
             FROM Classifica_oggetto C
@@ -743,12 +774,42 @@ class DatabaseHelper{
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
+    }*/
+    public function getItemClassification() {
+        $query = "
+            SELECT O.Categoria, COUNT(*) as Qta
+            FROM Inserzione I, Oggetto O
+            WHERE O.IDInserzione = I.ID
+            AND I.Attivo = 0
+            GROUP BY O.Categoria
+            ORDER BY 2 DESC
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getItemCount() {
+    /*public function getItemCount() {
         $query = "
             SELECT COUNT(*) as nItem
             FROM Classifica_oggetto C
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }*/
+    public function getItemCount() {
+        $query = "
+            SELECT COUNT(*) as nItem
+            FROM Inserzione I, Oggetto O
+            WHERE O.IDInserzione = I.ID
+            AND I.Attivo = 0
         ";
 
         $stmt = $this->db->prepare($query);
@@ -762,7 +823,7 @@ class DatabaseHelper{
         return $this->db->insert_id;
     }
 
-    public function getSellerClassification() {
+    /*public function getSellerClassification() {
         $query = "
             SELECT C.NomeUtente, C.AvgStella
             FROM Classifica_venditore C
@@ -774,12 +835,38 @@ class DatabaseHelper{
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
+    }*/
+    public function getSellerClassification() {
+        $query = "
+            SELECT U.ID, U.Username, U.AvgStella
+            FROM Utente U
+            ORDER BY U.AvgStella DESC
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getSellerCount() {
+    /*public function getSellerCount() {
         $query = "
             SELECT COUNT(*) as nSeller
             FROM Classifica_venditore C
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }*/
+    public function getSellerCount() {
+        $query = "
+            SELECT COUNT(*) as nSeller
+            FROM Utente U
+            WHERE U.AvgStella IS NOT NULL
         ";
 
         $stmt = $this->db->prepare($query);

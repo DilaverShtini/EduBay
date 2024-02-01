@@ -19,8 +19,8 @@
                 <?php $item = $items[$i];?>
 
                     <label for="posizioneClassifica"><?php echo $i+1; ?>.</label>
-                    <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" readonly value="<?php echo $item['NomeOggetto']; ?>">
-                    <input class="quantitaOggetto" type="text" id="nomeOggetto[]" name="nomeOggetto[]" readonly value="<?php echo $item['Qta']; ?>"><br><br>
+                    <input type="text" id="categoria[]" name="categoria[]" readonly value="<?php echo $item['Categoria']; ?>">
+                    <input class="quantitaOggetto" type="text" id="categoria[]" name="categoria[]" readonly value="<?php echo $item['Qta']; ?>"><br><br>
 
             <?php endfor; ?>
             <hr>

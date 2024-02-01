@@ -22,16 +22,15 @@
                 /** controllo se posso permettermi l'inserzione da acquistare */
                 if($dbH->isMoneyEnough($insertionItem[0]['TotCosto'], $_SESSION['ID'])) {
 
-                    /** creo poi il dettaglio ordine con le inserzioni selezionate con la checkbox ($selectedInsertionsIDs)
-                    *   bisogna aggiungere l'oggetto in classifica e poi crare l'ordine in dettaglio per la chiave esterna */
+                    /** creo poi il dettaglio ordine con le inserzioni selezionate con la checkbox ($selectedInsertionsIDs) */
                     foreach ($insertionItem as $object) {
-                        if ($dbH->isObjectRank($object['Nome'])) {
+                        /*if ($dbH->isObjectRank($object['Nome'])) {
                             $dbH->updateObjectRank($object['Nome']);
                         } else {
                             $dbH->addObjectRank($object['Nome']);
-                        }
+                        }*/
 
-                        $dbH->addOrderDetail($orderCode[0]['Cod_Ordine'], $selectedInsertionIDs, $object['Nome']);
+                        $dbH->addOrderDetail($orderCode[0]['Cod_Ordine'], $selectedInsertionIDs);
                     }
                     $dbH->removeMoney($insertionItem[0]['TotCosto'], $_SESSION['ID']);
                     $dbH->disactiveInsertion($selectedInsertionIDs);

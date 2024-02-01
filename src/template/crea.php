@@ -10,16 +10,18 @@
             $dbH->addInsertion($descrizioneOggetto, $idUtente);
             $lastInsertionId = $dbH->getLastInsertionId();
 
+            $categorieOggetto = $_POST['categoriaOggetto'];
             $nomiOggetto = $_POST['nomeOggetto'];
             $prezziOggetto = $_POST['prezzoOggetto'];
             $usureOggetto = $_POST['usuraOggetto'];
 
             for ($i = 0; $i < count($nomiOggetto); $i++) {
+                $categoriaOggetto = $categorieOggetto[$i];
                 $nomeOggetto = $nomiOggetto[$i];
                 $prezzoOggetto = $prezziOggetto[$i];
                 $usuraOggetto = $usureOggetto[$i];
 
-                $dbH->addObject($nomeOggetto, $prezzoOggetto, $usuraOggetto, $lastInsertionId[0]['ID']);
+                $dbH->addObject($categoriaOggetto, $nomeOggetto, $prezzoOggetto, $usuraOggetto, $lastInsertionId[0]['ID']);
             }
 
             $dbH->addTotalInInsertion($lastInsertionId[0]['ID']);
@@ -33,6 +35,12 @@
             
             var div = document.createElement("div");
 
+            var labelCategoria = document.createElement("label");
+            labelCategoria.textContent = "Categoria oggetto:";
+            var inputCategoria = document.createElement("input");
+            inputCategoria.type = "text";
+            inputCategoria.name = "categoriaOggetto[]";
+
             var labelNome = document.createElement("label");
             labelNome.textContent = "Nome oggetto:";
             var inputNome = document.createElement("input");
@@ -43,8 +51,8 @@
             labelPrezzo.textContent = "Prezzo:";
             var inputPrezzo = document.createElement("input");
             inputPrezzo.type = "number";
+            inputPrezzo.step="0.01";
             inputPrezzo.name = "prezzoOggetto[]";
-            inputPrezzo.value = 0;
 
             var labelUsura = document.createElement("label");
             labelUsura.textContent = "Livello usura (0 come nuovo | 5 molto danneggiato):";
@@ -52,6 +60,12 @@
             inputUsura.type = "number";
             inputUsura.name = "usuraOggetto[]";
             inputUsura.value = 0;
+
+            div.appendChild(document.createElement("br"));
+            div.appendChild(labelCategoria);
+            div.appendChild(document.createElement("br"));
+            div.appendChild(inputCategoria);
+            div.appendChild(document.createElement("br"));
 
             div.appendChild(document.createElement("br"));
             div.appendChild(labelNome);
@@ -81,6 +95,8 @@
     <form action="#" method="post">
         <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
         <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
+        <label for="nomeOggett">Categoria oggetto:</label><br>
+        <input type="text" id="categoriaOggetto[]" name="categoriaOggetto[]" required placeholder="Categoria oggetto"><br>
         <label for="nomeOggett">Nome oggetto:</label><br>
         <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
         <label for="prezzoOggetto">Prezzo:</label><br>
