@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['address_id'])) {
     $addressId = $_GET['address_id'];
     $idUtente = $_SESSION['ID'];
 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
 
     // Disattiva gli altri indirizzi dell'utente
     $dbH->disactivateOtherAddresses($addressId, $idUtente);

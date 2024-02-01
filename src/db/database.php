@@ -469,15 +469,8 @@ class DatabaseHelper{
         $stmt->execute();
     }
 
-    public function addReview($idUtenteRecensito, $idUtenteRecensore, $numStella) {
-        $query = "
-            INSERT INTO recensione (IDRecensito, IDRecensore, NumStelle)
-            VALUES (?, ?, ?)
-        ";
+    public function addReviewOnDetailOrder(){
 
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('iii', $idUtenteRecensito, $idUtenteRecensore, $numStella);
-        $stmt->execute();
     }
 
     public function addReso() {
@@ -487,6 +480,37 @@ class DatabaseHelper{
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
+    }
+
+    public function addReviewInDetailOrder($voto, $idInserzione) {
+        $query = "
+            UPDATE dettaglio_ordine SET Recensione=? WHERE ID_Inserzione = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('si', $voto, $idInserzione);
+        $stmt->execute();
+    } 
+
+    public function isDetailOrderReviewed($idUtente){
+        $query = "
+            SELECT Recensione
+            FROM dettaglio_ordine DT, ordine O
+            WHERE DT.Cod_Ordine = O.Cod_Ordine AND O.IDUtente = ?
+        ";
+  
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idUtente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $row = $result->fetch_assoc();
+
+        if(is_null($row["Recensione"])){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public function getInsertionsOnDetailOrder($idUtente){
