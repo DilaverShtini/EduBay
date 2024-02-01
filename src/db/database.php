@@ -830,7 +830,7 @@ class DatabaseHelper{
     }*/
     public function getItemCount() {
         $query = "
-            SELECT COUNT(*) as nItem
+            SELECT COUNT(DISTINCT(O.Categoria)) as nItem
             FROM Inserzione I, Oggetto O
             WHERE O.IDInserzione = I.ID
             AND I.Attivo = 0
