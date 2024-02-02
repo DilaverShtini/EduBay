@@ -5,7 +5,7 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $descrizioneOggetto = $_POST['descrizioneOggetto'];
             $idUtente = $_SESSION['ID'];
-            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
         
             $dbH->addInsertion($descrizioneOggetto, $idUtente);
             $lastInsertionId = $dbH->getLastInsertionId();
@@ -37,9 +37,33 @@
 
             var labelCategoria = document.createElement("label");
             labelCategoria.textContent = "Categoria oggetto:";
-            var inputCategoria = document.createElement("input");
-            inputCategoria.type = "text";
-            inputCategoria.name = "categoriaOggetto[]";
+            var selectCategoria = document.createElement("select");
+            selectCategoria.name = "categoriaOggetto[]";
+
+            var opzioneInformatica = document.createElement("option");
+            opzioneInformatica.value = "Informatica";
+            opzioneInformatica.textContent = "Informatica";
+            selectCategoria.appendChild(opzioneInformatica);
+
+            var opzioneLibri = document.createElement("option");
+            opzioneLibri.value = "Libri";
+            opzioneLibri.textContent = "Libri";
+            selectCategoria.appendChild(opzioneLibri);
+
+            var opzioneQuaderni = document.createElement("option");
+            opzioneQuaderni.value = "Quaderni";
+            opzioneQuaderni.textContent = "Quaderni";
+            selectCategoria.appendChild(opzioneQuaderni);
+
+            var opzioneCancelleria = document.createElement("option");
+            opzioneCancelleria.value = "Cancelleria";
+            opzioneCancelleria.textContent = "Cancelleria";
+            selectCategoria.appendChild(opzioneCancelleria);
+
+            var opzioneRighelli = document.createElement("option");
+            opzioneRighelli.value = "Righelli";
+            opzioneRighelli.textContent = "Righelli";
+            selectCategoria.appendChild(opzioneRighelli);
 
             var labelNome = document.createElement("label");
             labelNome.textContent = "Nome oggetto:";
@@ -64,7 +88,7 @@
             div.appendChild(document.createElement("br"));
             div.appendChild(labelCategoria);
             div.appendChild(document.createElement("br"));
-            div.appendChild(inputCategoria);
+            div.appendChild(selectCategoria);
             div.appendChild(document.createElement("br"));
 
             div.appendChild(document.createElement("br"));
@@ -95,8 +119,15 @@
     <form action="#" method="post">
         <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
         <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
-        <label for="nomeOggetto">Categoria oggetto:</label><br>
-        <input type="text" id="categoriaOggetto[]" name="categoriaOggetto[]" required placeholder="Categoria oggetto"><br>
+        <label for="categoriaOggetto">Categoria oggetto:</label><br>
+        <select id="categoriaOggetto[]" name="categoriaOggetto[]" required>
+            <option value="Informatica">Informatica</option>
+            <option value="Libri">Libri</option>
+            <option value="Quaderni">Quaderni</option>
+            <option value="Cancelleria">Cancelleria</option>
+            <option value="Righelli">Righelli</option>
+            <!-- Aggiungi altre opzioni come necessario -->
+        </select><br>
         <label for="nomeOggetto">Nome oggetto:</label><br>
         <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
         <label for="prezzoOggetto">Prezzo:</label><br>

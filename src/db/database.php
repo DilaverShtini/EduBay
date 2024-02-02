@@ -743,7 +743,7 @@ class DatabaseHelper{
         $query = "
             SELECT U.ID, U.Username, U.Email, COUNT(*) as stars
             FROM Dettaglio_Ordine DO, Inserzione I, Utente U
-            WHERE DO.ID_inserione = I.ID
+            WHERE DO.ID_Inserzione = I.ID
             AND I.IDUtente = U.ID
             AND DO.Recensione = 1
             AND U.bloccato = 0
@@ -923,6 +923,17 @@ class DatabaseHelper{
         $query = "
                 DELETE FROM Oggetto
                 WHERE IDInserzione = ?
+            ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $insertionID);
+        $stmt->execute();
+    }
+
+    public function deleteInsertioninOrderDetail($insertionID) {
+        $query = "
+                DELETE FROM Dettaglio_Ordine
+                WHERE ID_Inserzione = ?
             ";
 
         $stmt = $this->db->prepare($query);

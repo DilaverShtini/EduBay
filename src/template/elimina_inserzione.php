@@ -2,7 +2,7 @@
     <?php
     require_once './db/database.php';
 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
     $insertions = $dbH->getInsertions();
     $insertionsCount = $dbH->getNumberOfInsertions();
@@ -14,6 +14,7 @@
 
                 $insertionItem = $dbH->getInsertionItem($selectedInsertionIDs);
                 $dbH->deleteObject($selectedInsertionIDs);
+                $dbH->deleteInsertioninOrderDetail($selectedInsertionIDs);
                 $dbH->deleteInsertion($selectedInsertionIDs);
 
             }
@@ -27,8 +28,8 @@
 
         <h2>Scelga l'inserzione da eliminare</h2>
         <form action="#" method="post">
-            <?php for ($i = 0; $i < $insertionsCount[0]['nInsertion']; $i++): ?>
-                <?php  if($insertions[$i]['Attivo']): ?>
+            <?php for ($i = 0; $i < $insertionsCount[0]['nInsertion']; $i++):?>
+                <?php if($insertions[$i]['Attivo']): ?>
                     <?php $insertion = $insertions[$i];?>
                 
                     <input type="checkbox" id="inserzione_<?php echo $insertion['UniqueID']; ?>" name="inserzione[]" value="<?php echo $insertion['UniqueID']; ?>">
