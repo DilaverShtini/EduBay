@@ -13,8 +13,8 @@ if(isset($_SESSION["ID"])) {
     $password=$_POST["password"];
     $password2=$_POST["password2"];
 
-    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3306);
-    $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3306);
+    $db = new mysqli("127.0.0.1", "root", "", "EduBay", 3307);
+    $dbh = new DatabaseHelper("127.0.0.1", "root", "", "EduBay", 3307);
     if($password!=$password2){
         $err_mess="Le due password non corrispondono";
         $show_form=true;

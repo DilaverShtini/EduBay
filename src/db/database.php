@@ -102,6 +102,22 @@ class DatabaseHelper{
         return $result->fetch_assoc();
     }
 
+    public function getUserThatCreateInsertion($idInsertion) {
+        $query = "
+            SELECT U.ID
+            FROM Inserzione I, Utente U
+            WHERE I.IDUtente=U.ID
+            AND I.ID=?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idInsertion);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
     public function getLastInsertionId() {
         $query = "
             SELECT ID
@@ -441,19 +457,21 @@ class DatabaseHelper{
         return false;
     }
 
-    public function updateSellerStar($nameSeller, $reviewedID) {
+    public function updateSellerStar($reviewedID) {
         $query = "
-            UPDATE classifica_venditore
-            SET AvgStella = (
-                                SELECT AVG(R.NumStelle)
-                                FROM Recensione R
-                                WHERE IDRecensito = ?
+            UPDATE utente UT
+            SET UT.AvgStella = (
+                                SELECT AVG(DO.Recensione) as avgStella
+                                FROM Dettaglio_Ordine DO, Inserzione I, Utente U
+                                WHERE DO.ID_Inserzione = I.ID
+                                AND I.IDUtente = U.ID
+                                AND U.ID=?
                                 )
-            WHERE NomeUtente = ?
+            WHERE UT.ID = ?
         ";
     
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('is', $reviewedID, $nameSeller);
+        $stmt->bind_param('ii', $reviewedID, $reviewedID);
         $stmt->execute();
     }
 
@@ -491,15 +509,15 @@ class DatabaseHelper{
         $stmt->execute();
     } 
 
-    public function isDetailOrderReviewed($idUtente){
+    public function isDetailOrderReviewed($idInserzione){
         $query = "
             SELECT Recensione
-            FROM dettaglio_ordine DT, ordine O
-            WHERE DT.Cod_Ordine = O.Cod_Ordine AND O.IDUtente = ?
+            FROM dettaglio_ordine DT
+            WHERE DT.ID_Inserzione=?
         ";
   
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $idUtente);
+        $stmt->bind_param('i', $idInserzione);
         $stmt->execute();
         $result = $stmt->get_result();
 
