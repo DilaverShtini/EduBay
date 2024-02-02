@@ -33,9 +33,8 @@
     <?php foreach ($dbH->getInsertionsOnDetailOrder($_SESSION['ID']) as $insertion) { ?>
 
     
-    <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione'])) : /*
-        &&
-    !$dbh->isDetailOrderReviewed($insertion['ID_Inserzione']))*/?>
+    <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione'])
+    && !$dbh->isDetailOrderReviewed($insertion['ID_Inserzione'])) : ?>
 
     <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
 
