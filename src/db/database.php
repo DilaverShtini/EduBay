@@ -104,7 +104,7 @@ class DatabaseHelper{
 
     public function getUserThatCreateInsertion($idInsertion) {
         $query = "
-            SELECT ID
+            SELECT U.ID
             FROM Inserzione I, Utente U
             WHERE I.IDUtente=U.ID
             AND I.ID=?
