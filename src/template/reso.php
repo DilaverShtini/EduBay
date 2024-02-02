@@ -5,9 +5,10 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(isset($_POST['inserzione'])) {
+            $descrizioneReso = $_POST["descrizioneReso"];
             $selectedInsertionIDs = $_POST['inserzione'];
             foreach ($selectedInsertionIDs as $selectedInsertionID) {
-                $dbH->addReso();
+                $dbH->addReso($descrizioneReso);
                 $last_id = $dbH->getLastInsertId(); 
                 
                 $dbH->addResoInDettaglioOrdine($selectedInsertionID, $last_id);
@@ -48,6 +49,8 @@
             <hr>
         <?php endif; ?>
     <?php } ?>
+
+    <textarea rows="5" cols="30" name="descrizioneReso" placeholder="Motiva il tuo reso" required></textarea><br>
 
     
        <input type="submit" value="Rendi!"><br><br>

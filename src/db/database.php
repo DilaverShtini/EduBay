@@ -319,8 +319,8 @@ class DatabaseHelper{
 
     public function addOrder($utenteID) {
         $query = "
-            INSERT INTO ordine (IDUtente)
-            VALUES (?)
+            INSERT INTO ordine (IDUtente, data)
+            VALUES (?,NOW())
         ";
 
         $stmt = $this->db->prepare($query);
@@ -490,12 +490,13 @@ class DatabaseHelper{
 
     }
 
-    public function addReso() {
+    public function addReso($descrizioneReso) {
         $query = "
-            INSERT INTO reso VALUES()
+            INSERT INTO reso(Descrizione, Data) VALUES(?, NOW())
         ";
 
         $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $descrizioneReso);
         $stmt->execute();
     }
 
