@@ -8,11 +8,11 @@
         }
 
         if(isset($_POST['inserzione'])) {
-            $selectedInsertionIDs = $_POST['inserzione'];
-            foreach ($selectedInsertionIDs as $selectedInsertionID){
-                $dbH->addReviewInDetailOrder($voto_selezionato, $selectedInsertionID);
-            }
+            $selectedInsertionID = $_POST['inserzione'];
+            $dbH->addReviewInDetailOrder($voto_selezionato, $selectedInsertionID);
         }
+        $idUserCreator = $dbH->getUserThatCreateInsertion($selectedInsertionID);
+        $dbH->updateSellerStar($idUserCreator);
 
         echo "recensione eseguita con successo";
     }
@@ -32,12 +32,14 @@
     </select><br><br>
     <?php foreach ($dbH->getInsertionsOnDetailOrder($_SESSION['ID']) as $insertion) { ?>
 
-    <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione']) &&
-    !$dbh->isDetailOrderReviewed($_SESSION['ID'])): ?>
+    
+    <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione'])) : /*
+        &&
+    !$dbh->isDetailOrderReviewed($insertion['ID_Inserzione']))*/?>
 
     <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
 
-    <input type="checkbox" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione[]" value="<?php echo $detailInsertion[0]['ID']; ?>">
+    <input type="radio" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione" value="<?php echo $detailInsertion[0]['ID']; ?>">
     <label><h5>Scegli gli ordini da recensire: <br><?php echo $detailInsertion[0]['Descrizione']; ?></h5></label><br>
 
     <?php $objectsInInsertion = $dbH->getInsertionObjects($insertion["ID_Inserzione"]);
