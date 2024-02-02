@@ -5,7 +5,7 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $descrizioneOggetto = $_POST['descrizioneOggetto'];
             $idUtente = $_SESSION['ID'];
-            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
         
             $dbH->addInsertion($descrizioneOggetto, $idUtente);
             $lastInsertionId = $dbH->getLastInsertionId();
