@@ -1,7 +1,7 @@
 <?php require_once './db/database.php'; 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306); 
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307); 
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["inserzione"])) {
         
         if (isset($_POST["voto"])) {
             $voto_selezionato = intval($_POST["voto"]);
@@ -30,6 +30,7 @@
         <option value="4">4</option>
         <option value="5">5</option>
     </select><br><br>
+    <h3>Seleziona gli ordini da recensire</h3>
     <?php foreach ($dbH->getInsertionsOnDetailOrder($_SESSION['ID']) as $insertion) { ?>
 
     
@@ -39,8 +40,7 @@
     <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
 
     <input type="radio" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione" value="<?php echo $detailInsertion[0]['ID']; ?>">
-    <label><h5>Scegli gli ordini da recensire: <br><?php echo $detailInsertion[0]['Descrizione']; ?></h5></label><br>
-
+    
     <?php $objectsInInsertion = $dbH->getInsertionObjects($insertion["ID_Inserzione"]);
 
         foreach ($objectsInInsertion as $object) { ?>
