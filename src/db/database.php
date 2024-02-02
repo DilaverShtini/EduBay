@@ -738,6 +738,21 @@ class DatabaseHelper{
         }
     }
 
+    public function isBlocked($userId) {
+        $query = "
+            SELECT U.Bloccato
+            FROM Utente U
+            WHERE U.ID = ?
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);        
+    }
+
     public function isUserBadValutated() {
         $query = "
             SELECT U.ID, U.Username, U.Email, COUNT(*) as stars

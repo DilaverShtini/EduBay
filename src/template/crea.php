@@ -1,11 +1,11 @@
 <div>
     <?php
         require_once './db/database.php';
+        $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $descrizioneOggetto = $_POST['descrizioneOggetto'];
             $idUtente = $_SESSION['ID'];
-            $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
         
             $dbH->addInsertion($descrizioneOggetto, $idUtente);
             $lastInsertionId = $dbH->getLastInsertionId();
@@ -113,33 +113,42 @@
 
         }
     </script>
+    <?php 
+        $user = $dbH->isBlocked($_SESSION['ID']);
+        if (!$user[0]['Bloccato']): ?>
 
-    <h2>Inserisci i dati nei campi per creare un inserzione!</h2>
+        <h2>Inserisci i dati nei campi per creare un inserzione!</h2>
 
-    <form action="#" method="post">
-        <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
-        <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
-        <label for="categoriaOggetto">Categoria oggetto:</label><br>
-        <select id="categoriaOggetto[]" name="categoriaOggetto[]" required>
-            <option value="Informatica">Informatica</option>
-            <option value="Libri">Libri</option>
-            <option value="Quaderni">Quaderni</option>
-            <option value="Cancelleria">Cancelleria</option>
-            <option value="Righelli">Righelli</option>
-            <!-- Aggiungi altre opzioni come necessario -->
-        </select><br>
-        <label for="nomeOggetto">Nome oggetto:</label><br>
-        <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
-        <label for="prezzoOggetto">Prezzo:</label><br>
-        <input type="number" id="prezzoOggetto[]" step="0.01" name="prezzoOggetto[]" required><br>
-        <label for="usuraOggetto">Livello usura (0 come nuovo | 5 molto danneggiato):</label><br>
-        <input type="number" min="0" max="5" id="usuraOggetto[]" name="usuraOggetto[]" value=0><br>
+        <form action="#" method="post">
+            <label for="descrizioneOggetto">Descrizione Inserzione:</label><br>
+            <textarea rows="5" cols="30" name="descrizioneOggetto" placeholder="Descrizione inserzione"></textarea><br>
+            <label for="categoriaOggetto">Categoria oggetto:</label><br>
+            <select id="categoriaOggetto[]" name="categoriaOggetto[]" required>
+                <option value="Informatica">Informatica</option>
+                <option value="Libri">Libri</option>
+                <option value="Quaderni">Quaderni</option>
+                <option value="Cancelleria">Cancelleria</option>
+                <option value="Righelli">Righelli</option>
+                <!-- Aggiungi altre opzioni come necessario -->
+            </select><br>
+            <label for="nomeOggetto">Nome oggetto:</label><br>
+            <input type="text" id="nomeOggetto[]" name="nomeOggetto[]" required placeholder="Nome oggetto"><br>
+            <label for="prezzoOggetto">Prezzo:</label><br>
+            <input type="number" id="prezzoOggetto[]" step="0.01" name="prezzoOggetto[]" required><br>
+            <label for="usuraOggetto">Livello usura (0 come nuovo | 5 molto danneggiato):</label><br>
+            <input type="number" min="0" max="5" id="usuraOggetto[]" name="usuraOggetto[]" value=0><br>
 
-        <div id="campiAggiuntivi"></div><br>
-        
-        <input type="button" value="+" onclick="aggiungiCampo()"><br><br>
+            <div id="campiAggiuntivi"></div><br>
+            
+            <input type="button" value="+" onclick="aggiungiCampo()"><br><br>
 
-        <input type="submit" value="Crea inserzione!">
-    </form> 
+            <input type="submit" value="Crea inserzione!">
+        </form> 
+
+    <?php else: ?>
+
+        Purtroppo sei ancora bloccato, per il momento puoi solo acquistare o rendere!
+
+    <?php endif; ?>
 
 <div>
