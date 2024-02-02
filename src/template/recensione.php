@@ -1,5 +1,5 @@
 <?php require_once './db/database.php'; 
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307); 
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306); 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         

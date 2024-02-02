@@ -196,7 +196,6 @@ class DatabaseHelper{
         $query = "
             SELECT COUNT(*) as nInsertion
             FROM Inserzione I
-            WHERE I.Attivo = 1
         ";
 
         $stmt = $this->db->prepare($query);
@@ -742,9 +741,9 @@ class DatabaseHelper{
     public function isUserBadValutated() {
         $query = "
             SELECT U.ID, U.Username, U.Email, COUNT(*) as stars
-            FROM Dettaglio_Ordine DO, Ordine O, Utente U
-            WHERE DO.Cod_Ordine = O.Cod_Ordine
-            AND O.IDUtente = U.ID
+            FROM Dettaglio_Ordine DO, Inserzione I, Utente U
+            WHERE DO.ID_inserione = I.ID
+            AND I.IDUtente = U.ID
             AND DO.Recensione = 1
             AND U.bloccato = 0
             GROUP BY U.ID, U.Username
@@ -849,7 +848,7 @@ class DatabaseHelper{
     }*/
     public function getItemCount() {
         $query = "
-            SELECT COUNT(*) as nItem
+            SELECT COUNT(DISTINCT(O.Categoria)) as nItem
             FROM Inserzione I, Oggetto O
             WHERE O.IDInserzione = I.ID
             AND I.Attivo = 0
