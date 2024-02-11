@@ -37,15 +37,41 @@
 
             var labelCategoria = document.createElement("label");
             labelCategoria.textContent = "Categoria oggetto:";
-            var inputCategoria = document.createElement("input");
-            inputCategoria.type = "text";
-            inputCategoria.name = "categoriaOggetto[]";
+            var selectCategoria = document.createElement("select");
+            selectCategoria.name = "categoriaOggetto[]";
+            selectCategoria.required = true;
+
+            var opzioneInformatica = document.createElement("option");
+            opzioneInformatica.value = "Informatica";
+            opzioneInformatica.textContent = "Informatica";
+            selectCategoria.appendChild(opzioneInformatica);
+
+            var opzioneLibri = document.createElement("option");
+            opzioneLibri.value = "Libri";
+            opzioneLibri.textContent = "Libri";
+            selectCategoria.appendChild(opzioneLibri);
+
+            var opzioneQuaderni = document.createElement("option");
+            opzioneQuaderni.value = "Quaderni";
+            opzioneQuaderni.textContent = "Quaderni";
+            selectCategoria.appendChild(opzioneQuaderni);
+
+            var opzioneCancelleria = document.createElement("option");
+            opzioneCancelleria.value = "Cancelleria";
+            opzioneCancelleria.textContent = "Cancelleria";
+            selectCategoria.appendChild(opzioneCancelleria);
+
+            var opzioneRighelli = document.createElement("option");
+            opzioneRighelli.value = "Righelli";
+            opzioneRighelli.textContent = "Righelli";
+            selectCategoria.appendChild(opzioneRighelli);
 
             var labelNome = document.createElement("label");
             labelNome.textContent = "Nome oggetto:";
             var inputNome = document.createElement("input");
             inputNome.type = "text";
             inputNome.name = "nomeOggetto[]";
+            inputNome.required = true;
 
             var labelPrezzo = document.createElement("label");
             labelPrezzo.textContent = "Prezzo:";
@@ -53,6 +79,7 @@
             inputPrezzo.type = "number";
             inputPrezzo.step="0.01";
             inputPrezzo.name = "prezzoOggetto[]";
+            inputPrezzo.required = true;
 
             var labelUsura = document.createElement("label");
             labelUsura.textContent = "Livello usura (0 come nuovo | 5 molto danneggiato):";
@@ -64,7 +91,7 @@
             div.appendChild(document.createElement("br"));
             div.appendChild(labelCategoria);
             div.appendChild(document.createElement("br"));
-            div.appendChild(inputCategoria);
+            div.appendChild(selectCategoria);
             div.appendChild(document.createElement("br"));
 
             div.appendChild(document.createElement("br"));

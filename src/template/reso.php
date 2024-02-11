@@ -1,7 +1,7 @@
 <div>
     <?php
     require_once './db/database.php';
-    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3307);
+    $dbH = new DatabaseHelper("localhost", "root", "", "edubay", 3306);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(isset($_POST['inserzione'])) {
@@ -33,7 +33,7 @@
 
         <?php if(!$dbh->isInsertionActive($insertion['ID_Inserzione'])): ?>
 
-            <?php $detailInsertion = $dbH->getInsertionDetailFromID($insertion['ID_Inserzione']); ?>
+            <?php $detailInsertion = $dbH->getInsertionDetailFromIDAndUser($insertion['ID_Inserzione'], $_SESSION['ID']); ?>
 
             <input type="checkbox" id="inserzione_<?php echo $detailInsertion[0]['ID']; ?>" name="inserzione[]" value="<?php echo $detailInsertion[0]['ID']; ?>">
             <label><h5>Descrizione Inserzione: <br><?php echo $detailInsertion[0]['Descrizione']; ?></h5></label><br>

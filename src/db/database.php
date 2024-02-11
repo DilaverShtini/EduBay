@@ -563,6 +563,26 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getInsertionDetailFromIDAndUser($idInserzione, $IdUtente){
+        $query = "
+            SELECT I.*
+            FROM Inserzione I, Dettaglio_Ordine DO, Utente U, Ordine O
+            WHERE I.ID = DO.ID_Inserzione
+            AND DO.Cod_Ordine = O.Cod_Ordine
+            AND O.IDUtente = U.ID
+            AND I.ID = ?
+            AND U.ID = ?
+        ";
+
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $idInserzione, $IdUtente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     /*public function isMoneyEnough($insertionCost, $utenteID) {
         $query = "
             SELECT P.Saldo

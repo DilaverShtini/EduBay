@@ -2,7 +2,7 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
+-- Host: 127.0.0.1:3306
 -- Creato il: Gen 31, 2024 alle 22:36
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.0.30
